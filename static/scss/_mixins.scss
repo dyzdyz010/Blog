@@ -1,0 +1,51 @@
+@mixin hover {
+	color: #34AD9B;
+}
+
+@mixin nav {
+	display: block;
+	margin-top: 30px;
+
+	padding-top: 28px;
+	padding-bottom: 28px;
+
+	border-top: solid 1px #E6E6E6;
+	border-bottom: solid 1px #E6E6E6;
+	text-align: center;
+
+	font-family: "Open Sans";
+
+	ul {
+		margin-bottom: 0;
+		margin-left: 0;
+		list-style-type: none;
+
+		li {
+			display: inline-block;
+			font-size: 14px;
+
+			a {
+				i {
+					vertical-align: middle;
+				}
+				padding-right: 11px;
+				padding-left: 11px;
+				color: #CFCFCF;
+
+				&.active {
+					color: #34AD9B;
+				}
+
+				&:hover {
+					@include hover;
+				}
+			}
+		}
+	}
+}
+
+@mixin edit-focus {
+	&:focus {
+		outline: none;
+	}
+}

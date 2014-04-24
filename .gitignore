@@ -21,3 +21,11 @@ _testmain.go
 
 *.exe
 *.test
+
+Blog
+.DS_Store
+
+/bower_components/*
+/.sass-cache/*
+*.DS_Store
+/static/css/*
