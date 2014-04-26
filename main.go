@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "Blog/routers"
 	"github.com/astaxie/beego"
+	_ "github.com/dyzdyz010/Blog/routers"
 	"strings"
 )
 

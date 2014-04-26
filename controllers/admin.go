@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"Blog/models"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/dyzdyz010/Blog/models"
 )
 
 type AdminController struct {

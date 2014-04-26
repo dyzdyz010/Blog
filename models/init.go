@@ -3,8 +3,8 @@ package models
 import (
 	// "fmt"
 	// "github.com/astaxie/beego/config"
-	"Blog/ssdb"
 	"errors"
+	"github.com/dyzdyz010/Blog/ssdb"
 )
 
 var db *ssdb.Client
