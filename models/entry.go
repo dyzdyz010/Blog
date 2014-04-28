@@ -13,9 +13,9 @@ type Entry struct {
 	Author     string `json:"author"`
 	Date       string `json:"date"`
 	Collection string `json:"collection"`
-	Content    string `json:"content"`
+	Content    string `json:"content" form:"content"`
 	Likes      int    `json:"likes"`
-	Status     string `json:"status"`
+	Status     string `json:"status" form:"status"`
 }
 
 func PublishedEntries() (entries []Entry) {

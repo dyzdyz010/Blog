@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Web Fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Cabin|Open+Sans:400,300' rel='stylesheet' type='text/css'>
+ <link href='http://fonts.googleapis.com/css?family=Cabin|Open+Sans:400italic,400,600,300' rel='stylesheet' type='text/css'>
 
   <!-- Style Sheets -->
   <link rel="stylesheet" type="text/css" href="/static/css/app.css">

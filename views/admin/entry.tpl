@@ -7,7 +7,14 @@
 	<textarea class="entry-content-edit" type="text" name="content" placeholder="Content">{{.Entry.Content}}</textarea>
 	<div class="entry-content"></div>
 
-	<input type="submit" value="POST">
+	<select name="collection">
+	<option>Blog</option>
+	<option>Another word</option>
+	{{range $index, $c := .Collections}}
+	<option>{{$c.Title}}</option>
+	{{end}}
+	</select>
+	<input class="post-button" type="submit" value="POST">
 </form>
 </div>
 

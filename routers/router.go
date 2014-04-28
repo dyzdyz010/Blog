@@ -12,7 +12,16 @@ func init() {
 
 	// Admin
 	beego.Router("/admin", &controllers.AdminController{}, "get:Dashboard")
+
+	// Admin -> Entry
 	beego.Router("/admin/entries", &controllers.AdminController{}, "get:Entries")
 	beego.Router("/admin/entries/:id", &controllers.AdminController{}, "get:Entry")
+	beego.Router("/admin/entries/new", &controllers.AdminController{}, "get:Entry")
 	beego.Router("/admin/entries/:id", &controllers.AdminController{}, "post:PostEntry")
+
+	// Admin -> Collection
+	beego.Router("/admin/collections", &controllers.AdminController{}, "get:Collections")
+	beego.Router("/admin/entries/:id", &controllers.AdminController{}, "get:Collection")
+	beego.Router("/admin/entries/new", &controllers.AdminController{}, "get:Collection")
+	beego.Router("/admin/entries/new", &controllers.AdminController{}, "get:CreateCollection")
 }

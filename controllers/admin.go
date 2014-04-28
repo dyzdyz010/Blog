@@ -34,23 +34,52 @@ func (this *AdminController) Entry() {
 
 	eid := this.Ctx.Input.Param(":id")
 	fmt.Println(eid)
-	entry := models.EntryById(eid)
-	fmt.Println(entry)
+	if eid != "new" {
+		entry := models.EntryById(eid)
+		if entry == nil {
+			this.Abort("404")
+			return
+		} else {
+			this.Data["Entry"] = entry
+		}
+	}
 
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["EntryActive"] = true
 	this.Data["MarkdownEnabled"] = true
-
-	if entry != nil {
-		this.Data["Entry"] = entry
-	}
 }
 
 func (this *AdminController) PostEntry() {
 	entry := models.Entry{}
-	entry.Title = this.GetString("title")
+	err := this.ParseForm(&entry)
+	if err != nil {
+		panic(err)
+	}
+
+	entry.Id = this.Ctx.Input.Param(":id")
 	fmt.Println(entry)
 
 	this.ServeJson()
+}
+
+func (this *AdminController) Collections() {
+	this.TplNames = "admin/collection-list.tpl"
+
+	this.Data["Title"] = "Moonlightter"
+	this.Data["Subtitle"] = "My Programming Life"
+	this.Data["CollectionActive"] = true
+	// this.Data["Collections"] = entries
+}
+
+func (this *AdminController) Collection() {
+	this.TplNames = "admin/collection.tpl"
+
+	this.Data["Title"] = "Moonlightter"
+	this.Data["Subtitle"] = "My Programming Life"
+	this.Data["CollectionActive"] = true
+}
+
+func (this *AdminController) CreateCollection() {
+	this.TplNames = "admin/collection.tpl"
 }

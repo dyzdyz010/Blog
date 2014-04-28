@@ -45,5 +45,7 @@ func (this *FrontController) Entry() {
 
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
+	fmt.Println(entry.Content)
 	this.Data["Entry"] = entry
+	this.Data["MarkdownEnabled"] = true
 }

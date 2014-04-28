@@ -23,7 +23,7 @@
       <ul>
         <li><a class="{{if .DashboardActive}}  active {{end}}" href="/admin">Dashboard</a></li>
         <li><a class="{{if .EntryActive}}      active {{end}}" href="/admin/entries">Entries</a></li>
-        <li><a class="{{if .CollectionActive}} active {{end}}" href="#">Collections</a></li>
+        <li><a class="{{if .CollectionActive}} active {{end}}" href="/admin/collections">Collections</a></li>
         <li><a class="{{if .AboutActive}}      active {{end}}" href="#">About</a></li>
       </ul>
     </nav>

@@ -1,4 +1,5 @@
 @import "compass/reset";
+@import "compass/css3";
 @import "settings";
 @import "mixins";
 @import "icon-font";
@@ -38,7 +39,7 @@
 //   "foundation/components/thumbs",
 //   "foundation/components/tooltips",
 //   "foundation/components/top-bar",
-  "foundation/components/type";
+"foundation/components/type";
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
 
@@ -97,9 +98,6 @@
 				font-family: "Cabin", Helvetica, Arial, sans-serif;
 				a {
 					color: #121212;
-					// font-family: "Cabin", Helvetica, Arial, sans-serif;
-					// font-size: rem-calc(30);
-					// text-transform: uppercase;
 
 					&:hover {
 						@include hover;
@@ -115,8 +113,17 @@
 			}
 
 			.entry-content {
+				margin-top: 20px;
 				color: #777;
 				font-family: "Open Sans";
+
+				p {
+					font-size: rem-calc(20);
+
+					code {
+						color: #777;
+					}
+				}
 			}
 
 			.entry-meta {
@@ -202,10 +209,39 @@
 	}
 
 	#admin {
-		margin-top: 70px;
+		margin-top: 50px;
+
+		.post-button {
+			margin-top: 10px;
+			margin-left: 0;
+			border: none;
+			background-color: #FFF;
+			color: #34AD9B;
+			font-size: rem-calc(30);
+			cursor: pointer;
+			padding: 0;
+			&:hover {
+				color: #595959;
+			}
+		}
+
+		.entry-new, .collection-new {
+			text-align: right;
+			a {
+				position: relative;
+				text-align: right;
+				color: #34AD9B;
+				font-size: rem-calc(25);
+
+				&:hover {
+					color: #595959;
+				}
+			}
+		}
 
 		.entry-list {
 			width: 100%;
+			margin-top: 10px;
 			td, th {
 				padding: 10px;
 			}
@@ -268,6 +304,10 @@
 				padding-top: 30px;
 				width: 100%;
 				border-top: solid 1px #E6E6E6;
+				color: #777;
+
+				font-size: rem-calc(18);
+				font-family: "Open Sans";
 
 				h1, h2, h3, h4, h5, h6 {
 					color: #777;
@@ -277,10 +317,22 @@
 				p {
 
 				}
-				color: #777;
+			}
 
+			select {
+				@include appearance(none);
+				padding: 5px 10px;
+				outline: none;
+				border-color: #E6E6E6;
+				border-radius: 0;
+				background-color: #FFF;
+				color: #777;
+				text-transform: uppercase;
 				font-size: rem-calc(18);
-				font-family: "Open Sans";
+				font-family: "Cabin", Helvetica, Arial, sans-serif;
+				option {
+					text-transform: uppercase;
+				}
 			}
 		}
 	}
