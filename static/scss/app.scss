@@ -108,17 +108,19 @@
 			.entry-subtitle {
 				color: #777;
 				font-weight: 300;
-				font-size: rem-calc(23);
+				font-size: rem-calc(27);
 				font-family: "Open Sans";
 			}
 
 			.entry-content {
-				margin-top: 20px;
+				margin-top: 30px;
 				color: #777;
 				font-family: "Open Sans";
 
 				p {
+					letter-spacing: 0;
 					font-size: rem-calc(20);
+					line-height: rem-calc(40);
 
 					code {
 						color: #777;
@@ -214,14 +216,32 @@
 		.post-button {
 			margin-top: 10px;
 			margin-left: 0;
+			padding: 0;
 			border: none;
 			background-color: #FFF;
 			color: #34AD9B;
 			font-size: rem-calc(30);
 			cursor: pointer;
-			padding: 0;
 			&:hover {
 				color: #595959;
+			}
+		}
+
+		.login {
+			.login-name, .login-password {
+				@include edit-focus;
+				display: block;
+				margin: 0 auto;
+				border: none;
+				color: #595959;
+				font-size: 300;
+				font-size: rem-calc(30);
+				font-family: "Open Sans";
+			}
+
+			.post-button {
+				display: block;
+				margin: 0 auto;
 			}
 		}
 
@@ -229,8 +249,8 @@
 			text-align: right;
 			a {
 				position: relative;
-				text-align: right;
 				color: #34AD9B;
+				text-align: right;
 				font-size: rem-calc(25);
 
 				&:hover {
@@ -240,8 +260,8 @@
 		}
 
 		.entry-list {
-			width: 100%;
 			margin-top: 10px;
+			width: 100%;
 			td, th {
 				padding: 10px;
 			}
@@ -335,10 +355,34 @@
 				}
 			}
 		}
+
+		.collection {
+			.collection-title {
+				@include edit-focus;
+				display: block;
+				width: 100%;
+				border: none;
+				color: #121212;
+				text-transform: uppercase;
+				font-size: rem-calc(30);
+				font-family: "Cabin", Helvetica, Arial, sans-serif;
+			}
+			.collection-subtitle {
+				@include edit-focus;
+				display: block;
+				margin-top: 15px;
+				width: 100%;
+				border: none;
+				color: #777;
+				font-weight: 300;
+				font-size: rem-calc(25);
+				font-family: "Open Sans";
+			}
+		}
 	}
 
 	#footer {
-		margin-top: 70px;
+		margin-top: 100px;
 		text-align: center;
 
 		.social {

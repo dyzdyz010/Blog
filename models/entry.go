@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 )
@@ -44,7 +45,7 @@ func PublishedEntries() (entries []Entry) {
 }
 
 func EntryById(id string) *Entry {
-	fmt.Println(id)
+	// fmt.Println(id)
 	result, err := db.Do("hget", "entry", id)
 	if err != nil {
 		panic(err)
@@ -61,4 +62,51 @@ func EntryById(id string) *Entry {
 	entry.Date = t.Format(time.ANSIC)
 
 	return entry
+}
+
+func UpdateEntry(e Entry) (string, error) {
+	oid := e.Id
+	nid := Hash(e.Title)
+
+	_, err := db.Do("hdel", "entry", oid)
+	if err != nil {
+		return "", err
+	}
+
+	e.Id = nid
+	t := time.Now()
+	e.Date = t.Format(time.RFC3339)
+
+	ebytes, _ := json.Marshal(e)
+	result, err := db.Do("hset", "entry", e.Id, string(ebytes))
+	if err != nil {
+		return "", err
+	}
+	status := result[0]
+	if status != "ok" {
+		return "", errors.New(status)
+	}
+
+	return e.Id, nil
+}
+
+func PostNewEntry(e Entry) (string, error) {
+	fmt.Println(e)
+	e.Id = Hash(e.Title)
+	t := time.Now()
+	e.Date = t.Format(time.RFC3339)
+	e.Likes = 0
+	e.Status = "published"
+
+	ebytes, _ := json.Marshal(e)
+	result, err := db.Do("hset", "entry", e.Id, string(ebytes))
+	if err != nil {
+		return "", err
+	}
+	status := result[0]
+	if status != "ok" {
+		return "", errors.New(status)
+	}
+
+	return e.Id, nil
 }
