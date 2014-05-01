@@ -129,6 +129,10 @@ Then, get foundation using bower
 cd static
 bower install
 ```
+In Blog root folder, compile scss to css files we need
+```
+compass compile
+```
 Now you can start the database by going into ssdb installation path and hit
 ```
 ./ssdb-server -d ssdb.conf
