@@ -38,6 +38,7 @@ sudo apt-get install golang-stable
 
 ### Install Bower
 Bower depends on Node and npm, hence we need to resolve these first.
+
 Ubuntu 14.04 ships with node.js, just install it via
 ```
 sudo apt-get install nodejs
@@ -53,4 +54,32 @@ function correctly. Hence, you need to manually create a symbolic link
 sudo ln -s /usr/bin/nodejs /usr/bin/node
 ```
 
+You will also need to install `npm` as in Ubuntu 14.04, it's not together with
+nodejs.
+```
+sudo apt-get install npm
+```
 
+### Install SSDB
+SSDB is a high performace key-value(key-string, key-zset, key-hashmap) NoSQL
+database, an alternative to Redis.
+
+The easiest way is to compile and install SSDB from its git repo.
+```
+cd
+wget --no-check-certificate https://github.com/ideawu/ssdb/archive/master.zip
+unzip master
+cd ssdb-master
+make
+sudo make install
+```
+Now you can start it as daemon
+```
+./ssdb-server -d ssdb.conf
+```
+and stop it via
+```
+kill `cat ./var/ssdb.pid`
+```
+You can specify the ip and port that ssdb listen to by modifying the
+`ssdb.conf`
