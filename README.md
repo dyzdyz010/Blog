@@ -16,4 +16,7 @@ Prerequisites
 3. go
 4. bower
 
+Installation Guide
+-------
+### Ubuntu 14.04
 
