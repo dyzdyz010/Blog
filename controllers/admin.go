@@ -11,9 +11,9 @@ type AdminController struct {
 }
 
 func checkLogin(ac *AdminController) {
-	name := this.GetSession("user")
+	name := ac.GetSession("user")
 	if name == nil {
-		this.Redirect("/admin/login", 302)
+		ac.Redirect("/admin/login", 302)
 	}
 }
 
