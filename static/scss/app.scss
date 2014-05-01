@@ -55,6 +55,13 @@
 			text-align: center;
 			text-transform: uppercase;
 			font-family: "Cabin", Helvetica, Arial, sans-serif;
+
+			a {
+				color: #777;
+				&:hover {
+					color: #34AD9B;
+				}
+			}
 		}
 
 		.blog-subtitle {

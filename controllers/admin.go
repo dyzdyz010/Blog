@@ -10,11 +10,15 @@ type AdminController struct {
 	beego.Controller
 }
 
-func (this *AdminController) Dashboard() {
+func checkLogin(ac *AdminController) {
 	name := this.GetSession("user")
 	if name == nil {
 		this.Redirect("/admin/login", 302)
 	}
+}
+
+func (this *AdminController) Dashboard() {
+	checkLogin(this)
 
 	this.TplNames = "admin/dashboard.tpl"
 
@@ -55,6 +59,7 @@ func (this *AdminController) PostLogin() {
 // Entry Operations
 
 func (this *AdminController) Entries() {
+	checkLogin(this)
 	this.TplNames = "admin/entry-list.tpl"
 
 	entries := models.PublishedEntries()
@@ -66,6 +71,7 @@ func (this *AdminController) Entries() {
 }
 
 func (this *AdminController) Entry() {
+	checkLogin(this)
 	this.TplNames = "admin/entry.tpl"
 
 	eid := this.Ctx.Input.Param(":id")
@@ -112,8 +118,8 @@ func (this *AdminController) UpdateEntry() {
 }
 
 func (this *AdminController) NewEntry() {
+	checkLogin(this)
 	this.TplNames = "admin/entry.tpl"
-	fmt.Println(this.GetSession("user"))
 
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
@@ -148,6 +154,7 @@ func (this *AdminController) PostNewEntry() {
 // Collection Operations
 
 func (this *AdminController) Collections() {
+	checkLogin(this)
 	this.TplNames = "admin/collection-list.tpl"
 
 	this.Data["Title"] = "Moonlightter"
@@ -157,7 +164,7 @@ func (this *AdminController) Collections() {
 }
 
 func (this *AdminController) Collection() {
-	fmt.Println("Collection")
+	checkLogin(this)
 	this.TplNames = "admin/collection.tpl"
 
 	this.Data["Title"] = "Moonlightter"
@@ -170,8 +177,9 @@ func (this *AdminController) UpdateCollection() {
 }
 
 func (this *AdminController) NewCollection() {
-	fmt.Println("NewCollection")
+	checkLogin(this)
 	this.TplNames = "admin/collection.tpl"
+
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["CollectionActive"] = true
