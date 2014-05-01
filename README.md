@@ -35,7 +35,12 @@ sudo apt-get update
 sudo apt-get install golang-stable
 ```
 (If you don't have add-apt-repository, run "`sudo apt-get install python-software-properties`".) 
-
+Add /usr/local/go/bin to the PATH environment variable. You can do this by
+adding this line to your /etc/profile (for a system-wide installation) or
+$HOME/.profile
+```
+export PATH=$PATH:/usr/local/go/bin
+```
 ### Install Bower
 Bower depends on Node and npm, hence we need to resolve these first.
 
@@ -83,3 +88,23 @@ kill `cat ./var/ssdb.pid`
 ```
 You can specify the ip and port that ssdb listen to by modifying the
 `ssdb.conf`
+
+### Install ruby-compass
+You might have already installed Ruby, but if you haven't install it via,
+```
+sudo apt-get install ruby
+```
+Now install compass
+```
+sudo gem install compass
+```
+
+Configuration
+-------------
+Now you have only a few steps to follow before you can see it!
+
+First, you need to get the repo,
+```
+git clone https://github.com/dyzdyz010/Blog.git
+```
+
