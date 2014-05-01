@@ -11,6 +11,11 @@ type AdminController struct {
 }
 
 func (this *AdminController) Dashboard() {
+	name := this.GetSession("user")
+	if name == nil {
+		this.Redirect("/admin/login", 302)
+	}
+
 	this.TplNames = "admin/dashboard.tpl"
 
 	this.Data["Title"] = "Moonlightter"
@@ -25,6 +30,26 @@ func (this *AdminController) Login() {
 
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
+}
+
+func (this *AdminController) PostLogin() {
+	this.TplNames = "admin/login.tpl"
+
+	author := models.Author{}
+	err := this.ParseForm(&author)
+	if err != nil {
+		panic(err)
+	}
+
+	a, err := models.AuthorByName(author.Name)
+	if err != nil {
+		this.Data["Message"] = err.Error()
+	} else if models.Hash(author.Password) != a.Password {
+		this.Data["Message"] = "Wrong password."
+	} else {
+		this.SetSession("user", author.Name)
+		this.Redirect("/admin", 302)
+	}
 }
 
 // Entry Operations
