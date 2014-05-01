@@ -16,7 +16,7 @@
 <body>
 <div id="site">
   <header>
-    <h1 class="blog-title">{{.Title}}</h1>
+    <h1 class="blog-title"><a href="/">{{.Title}}</a></h1>
     <p class="blog-subtitle">{{.Subtitle}}</p>
 
     <nav class="main-nav">
