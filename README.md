@@ -41,6 +41,15 @@ $HOME/.profile
 ```
 export PATH=$PATH:/usr/local/go/bin
 ```
+You will also need a workspace for Go
+```
+mkdir $HOME/go
+```
+Add these lines to your /etc/profile or $HOME/.profile as well
+```
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+```
 ### Install Bower
 Bower depends on Node and npm, hence we need to resolve these first.
 
@@ -107,4 +116,24 @@ First, you need to get the repo,
 ```
 git clone https://github.com/dyzdyz010/Blog.git
 ```
-
+change directory into Blog
+```
+cd Blog
+```
+First, we'll get the dependencies using `go get`:
+```
+go get
+```
+Then, get foundation using bower
+```
+cd static
+bower install
+```
+Now you can start the database by going into ssdb installation path and hit
+```
+./ssdb-server -d ssdb.conf
+```
+Go back to the root directory of Blog, and start the server 
+```
+go run main.go
+```
