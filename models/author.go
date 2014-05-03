@@ -3,7 +3,7 @@ package models
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
+	// "fmt"
 )
 
 type Author struct {
@@ -20,7 +20,7 @@ func AuthorByName(name string) (*Author, error) {
 	if status != "ok" {
 		return nil, errors.New(status)
 	}
-	fmt.Println(result)
+	// fmt.Println(result)
 	author := &Author{}
 	err = json.Unmarshal([]byte(result[1]), author)
 	if err != nil {

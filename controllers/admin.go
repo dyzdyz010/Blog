@@ -102,6 +102,7 @@ func (this *AdminController) UpdateEntry() {
 
 	entry.Id = this.Ctx.Input.Param(":id")
 	fmt.Println(entry)
+	entry.Author = this.GetSession("user").(string)
 	nid, err := models.UpdateEntry(entry)
 
 	this.TplNames = "admin/entry.tpl"
@@ -126,6 +127,11 @@ func (this *AdminController) NewEntry() {
 	this.Data["PostId"] = "new"
 	this.Data["EntryActive"] = true
 	this.Data["MarkdownEnabled"] = true
+	collections, err := models.CollectionsByUser(this.GetSession("user").(string))
+	if err != nil {
+		panic(err)
+	}
+	this.Data["Collections"] = collections
 }
 
 func (this *AdminController) PostNewEntry() {
@@ -134,21 +140,21 @@ func (this *AdminController) PostNewEntry() {
 	if err != nil {
 		panic(err)
 	}
-
+	entry.Author = this.GetSession("user").(string)
 	nid, err := models.PostNewEntry(entry)
 	this.TplNames = "admin/entry.tpl"
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["EntryActive"] = true
 	if err != nil {
-		entry.Id = "new"
+		this.Data["PostId"] = "new"
+		this.Data["Message"] = err.Error()
 	} else {
-		entry.Id = nid
+		this.Data["PostId"] = nid + "/update"
+		this.Data["Message"] = "Post Successful"
 	}
-	this.Data["PostId"] = entry.Id + "/update"
 	this.Data["Entry"] = entry
 	this.Data["MarkdownEnabled"] = true
-	this.Data["Message"] = "Post Successful"
 }
 
 // Collection Operations
@@ -157,10 +163,15 @@ func (this *AdminController) Collections() {
 	checkLogin(this)
 	this.TplNames = "admin/collection-list.tpl"
 
+	collections, err := models.CollectionsByUser(this.GetSession("user").(string))
+	if err != nil {
+		panic(err)
+	}
+
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["CollectionActive"] = true
-	// this.Data["Collections"] = entries
+	this.Data["Collections"] = collections
 }
 
 func (this *AdminController) Collection() {
@@ -187,11 +198,25 @@ func (this *AdminController) NewCollection() {
 }
 
 func (this *AdminController) CreateCollection() {
-	this.TplNames = "admin/collection-list.tpl"
+	this.TplNames = "admin/collection.tpl"
 
 	collection := models.Collection{}
 	err := this.ParseForm(&collection)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(this.GetSession("user"))
+	collection.Author = this.GetSession("user").(string)
+	cid, err := models.CreateCollection(collection)
+	if err != nil {
+		this.Data["PostId"] = "new"
+		this.Data["Message"] = err.Error()
+	} else {
+		this.Data["PostId"] = cid + "/update"
+		this.Data["Message"] = "Post Successful"
+	}
+	this.Data["Title"] = "Moonlightter"
+	this.Data["Subtitle"] = "My Programming Life"
+	this.Data["Collection"] = collection
+	this.Data["CollectionActive"] = true
 }

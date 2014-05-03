@@ -266,7 +266,7 @@
 			}
 		}
 
-		.entry-list {
+		.entry-list, .collection-list {
 			margin-top: 10px;
 			width: 100%;
 			td, th {
@@ -370,7 +370,6 @@
 				width: 100%;
 				border: none;
 				color: #121212;
-				text-transform: uppercase;
 				font-size: rem-calc(30);
 				font-family: "Cabin", Helvetica, Arial, sans-serif;
 			}

@@ -8,8 +8,6 @@
 	<div class="entry-content"></div>
 
 	<select name="collection">
-	<option>Blog</option>
-	<option>Another word</option>
 	{{range $index, $c := .Collections}}
 	<option>{{$c.Title}}</option>
 	{{end}}

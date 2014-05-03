@@ -7,13 +7,16 @@ import (
 	"time"
 )
 
+// Hash Map Name
+var hname = "blog_entry"
+
 type Entry struct {
 	Id         string `json:"id"`
 	Title      string `json:"title" form:"title"`
 	Subtitle   string `json:"subtitle" form:"subtitle"`
 	Author     string `json:"author"`
 	Date       string `json:"date"`
-	Collection string `json:"collection"`
+	Collection string `json:"collection form:"collection"`
 	Content    string `json:"content" form:"content"`
 	Likes      int    `json:"likes"`
 	Status     string `json:"status" form:"status"`
@@ -22,7 +25,7 @@ type Entry struct {
 func PublishedEntries() (entries []Entry) {
 	entries = []Entry{}
 
-	result, err := db.Do("hscan", "entry", "", "", 10)
+	result, err := db.Do("hscan", hname, "", "", 10)
 	if err != nil {
 		panic(err)
 		return
@@ -46,7 +49,7 @@ func PublishedEntries() (entries []Entry) {
 
 func EntryById(id string) *Entry {
 	// fmt.Println(id)
-	result, err := db.Do("hget", "entry", id)
+	result, err := db.Do("hget", hname, id)
 	if err != nil {
 		panic(err)
 		return nil
@@ -68,7 +71,7 @@ func UpdateEntry(e Entry) (string, error) {
 	oid := e.Id
 	nid := Hash(e.Title)
 
-	_, err := db.Do("hdel", "entry", oid)
+	_, err := db.Do("hdel", hname, oid)
 	if err != nil {
 		return "", err
 	}
@@ -78,7 +81,7 @@ func UpdateEntry(e Entry) (string, error) {
 	e.Date = t.Format(time.RFC3339)
 
 	ebytes, _ := json.Marshal(e)
-	result, err := db.Do("hset", "entry", e.Id, string(ebytes))
+	result, err := db.Do("hset", hname, e.Id, string(ebytes))
 	if err != nil {
 		return "", err
 	}
@@ -99,7 +102,7 @@ func PostNewEntry(e Entry) (string, error) {
 	e.Status = "published"
 
 	ebytes, _ := json.Marshal(e)
-	result, err := db.Do("hset", "entry", e.Id, string(ebytes))
+	result, err := db.Do("hset", hname, e.Id, string(ebytes))
 	if err != nil {
 		return "", err
 	}
