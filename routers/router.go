@@ -19,12 +19,14 @@ func init() {
 	// Admin -> Entry
 	beego.Router("/admin/entries", &controllers.AdminController{}, "get:Entries")
 	beego.Router("/admin/entries/:id", &controllers.AdminController{}, "get:Entry")
-	beego.Router("/admin/entries/:id/update", &controllers.AdminController{}, "post:UpdateEntry")
+	beego.Router("/admin/entries/update/:id", &controllers.AdminController{}, "post:UpdateEntry")
+	beego.Router("/admin/entries/delete", &controllers.AdminController{}, "get:DeleteEntry")
 	beego.Router("/admin/entries/new", &controllers.AdminController{}, "get:NewEntry;post:PostNewEntry")
 
 	// Admin -> Collection
 	beego.Router("/admin/collections", &controllers.AdminController{}, "get:Collections")
 	beego.Router("/admin/collections/:id", &controllers.AdminController{}, "get:Collection")
-	beego.Router("/admin/collections/:id/update", &controllers.AdminController{}, "post:UpdateCollection")
+	beego.Router("/admin/collections/update/:id", &controllers.AdminController{}, "post:UpdateCollection")
+	beego.Router("/admin/collections/delete", &controllers.AdminController{}, "get:DeleteCollection")
 	beego.Router("/admin/collections/new", &controllers.AdminController{}, "get:NewCollection;post:CreateCollection")
 }

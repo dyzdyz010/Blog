@@ -9,6 +9,9 @@
 
   <!-- Style Sheets -->
   <link rel="stylesheet" type="text/css" href="/static/css/app.css">
+  {{if .MarkdownEnabled}}
+  <link rel="stylesheet" type="text/css" href="/static/css/monokai_sublime.css">
+  {{end}}
 </head>
 <body>
 <div id="site">

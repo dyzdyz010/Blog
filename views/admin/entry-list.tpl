@@ -19,7 +19,7 @@
       <td>{{$e.Date}}</td>
       <td>{{$e.Author}}</td>
       <td><a href="/admin/entries/{{$e.Id}}">Edit</a></td>
-      <td><a href="#">Delete</a></td>
+      <td><a href="/admin/entries/delete?id={{$e.Id}}">Delete</a></td>
     </tr>
     {{end}}
   </tbody>

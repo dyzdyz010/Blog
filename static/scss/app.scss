@@ -304,6 +304,7 @@
 				display: block;
 				width: 100%;
 				border: none;
+				text-transform: none;
 			}
 			.entry-subtitle {
 				@include edit-focus;

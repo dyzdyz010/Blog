@@ -9,6 +9,11 @@ import (
 
 var db *ssdb.Client
 
+// Hash Map Names
+var db_prefix = "blog_"
+var h_entry = db_prefix + "entry"
+var h_collection = db_prefix + "collection"
+
 func init() {
 	err := errors.New("")
 	db, err = ssdb.Connect("127.0.0.1", 8888)

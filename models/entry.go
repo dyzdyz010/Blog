@@ -7,9 +7,6 @@ import (
 	"time"
 )
 
-// Hash Map Name
-var hname = "blog_entry"
-
 type Entry struct {
 	Id         string `json:"id"`
 	Title      string `json:"title" form:"title"`
@@ -25,7 +22,7 @@ type Entry struct {
 func PublishedEntries() (entries []Entry) {
 	entries = []Entry{}
 
-	result, err := db.Do("hscan", hname, "", "", 10)
+	result, err := db.Do("hscan", h_entry, "", "", 10)
 	if err != nil {
 		panic(err)
 		return
@@ -49,7 +46,7 @@ func PublishedEntries() (entries []Entry) {
 
 func EntryById(id string) *Entry {
 	// fmt.Println(id)
-	result, err := db.Do("hget", hname, id)
+	result, err := db.Do("hget", h_entry, id)
 	if err != nil {
 		panic(err)
 		return nil
@@ -71,7 +68,7 @@ func UpdateEntry(e Entry) (string, error) {
 	oid := e.Id
 	nid := Hash(e.Title)
 
-	_, err := db.Do("hdel", hname, oid)
+	_, err := db.Do("hdel", h_entry, oid)
 	if err != nil {
 		return "", err
 	}
@@ -81,7 +78,7 @@ func UpdateEntry(e Entry) (string, error) {
 	e.Date = t.Format(time.RFC3339)
 
 	ebytes, _ := json.Marshal(e)
-	result, err := db.Do("hset", hname, e.Id, string(ebytes))
+	result, err := db.Do("hset", h_entry, e.Id, string(ebytes))
 	if err != nil {
 		return "", err
 	}
@@ -93,6 +90,19 @@ func UpdateEntry(e Entry) (string, error) {
 	return e.Id, nil
 }
 
+func DeleteEntry(id string) error {
+	result, err := db.Do("hdel", h_entry, id)
+	if err != nil {
+		return err
+	}
+	status := result[0]
+	if status != "ok" {
+		return errors.New(status)
+	}
+
+	return nil
+}
+
 func PostNewEntry(e Entry) (string, error) {
 	fmt.Println(e)
 	e.Id = Hash(e.Title)
@@ -102,7 +112,7 @@ func PostNewEntry(e Entry) (string, error) {
 	e.Status = "published"
 
 	ebytes, _ := json.Marshal(e)
-	result, err := db.Do("hset", hname, e.Id, string(ebytes))
+	result, err := db.Do("hset", h_entry, e.Id, string(ebytes))
 	if err != nil {
 		return "", err
 	}

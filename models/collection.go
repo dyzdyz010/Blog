@@ -35,7 +35,7 @@ func CollectionsByUser(name string) ([]Collection, error) {
 		cids = append(cids, result[i])
 	}
 
-	result, err = db.Do("multi_hget", "blog_collection", cids)
+	result, err = db.Do("multi_hget", h_collection, cids)
 	if err != nil {
 		return []Collection{}, err
 	}
@@ -69,7 +69,7 @@ func CreateCollection(c Collection) (string, error) {
 	}
 
 	cbytes, _ := json.Marshal(c)
-	result, err := db.Do("hset", "blog_collection", c.Id, string(cbytes))
+	result, err := db.Do("hset", h_collection, c.Id, string(cbytes))
 	if err != nil {
 		return "", err
 	}
@@ -81,8 +81,32 @@ func CreateCollection(c Collection) (string, error) {
 	return c.Id, nil
 }
 
+func UpdateCollection(c Collection) (string, error) {
+	oid := c.Id
+	nid := Hash(c.Title)
+
+	_, err := db.Do("hdel", h_collection, oid)
+	if err != nil {
+		return "", err
+	}
+
+	c.Id = nid
+
+	cbytes, _ := json.Marshal(c)
+	result, err := db.Do("hset", h_collection, c.Id, string(cbytes))
+	if err != nil {
+		return "", err
+	}
+	status := result[0]
+	if status != "ok" {
+		return "", errors.New(status)
+	}
+
+	return c.Id, nil
+}
+
 func CollectionById(id string) (Collection, error) {
-	result, err := db.Do("hget", "blog_collection", id)
+	result, err := db.Do("hget", h_collection, id)
 	if err != nil {
 		panic(err)
 		return Collection{}, err
@@ -96,4 +120,17 @@ func CollectionById(id string) (Collection, error) {
 	c := Collection{}
 	json.Unmarshal([]byte(result[1]), &c)
 	return c, nil
+}
+
+func DeleteCollection(id string) error {
+	result, err := db.Do("hdel", h_collection, id)
+	if err != nil {
+		return err
+	}
+	status := result[0]
+	if status != "ok" {
+		return errors.New(status)
+	}
+
+	return nil
 }

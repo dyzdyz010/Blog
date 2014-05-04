@@ -83,7 +83,7 @@ func (this *AdminController) Entry() {
 			return
 		} else {
 			this.Data["Entry"] = entry
-			this.Data["PostId"] = entry.Id + "/update"
+			this.Data["PostId"] = "update/" + entry.Id
 		}
 	}
 
@@ -91,6 +91,12 @@ func (this *AdminController) Entry() {
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["EntryActive"] = true
 	this.Data["MarkdownEnabled"] = true
+
+	collections, err := models.CollectionsByUser(this.GetSession("user").(string))
+	if err != nil {
+		panic(err)
+	}
+	this.Data["Collections"] = collections
 }
 
 func (this *AdminController) UpdateEntry() {
@@ -112,10 +118,28 @@ func (this *AdminController) UpdateEntry() {
 	if err == nil {
 		entry.Id = nid
 	}
-	this.Data["PostId"] = entry.Id + "/update"
+	this.Data["PostId"] = "update/" + entry.Id
 	this.Data["Entry"] = entry
 	this.Data["MarkdownEnabled"] = true
+	collections, err := models.CollectionsByUser(this.GetSession("user").(string))
+	if err != nil {
+		panic(err)
+	}
+	this.Data["Collections"] = collections
 	this.Data["Message"] = "Update Successful"
+}
+
+func (this *AdminController) DeleteEntry() {
+	this.TplNames = "admin/entry-list.tpl"
+
+	id := this.GetString("id")
+	fmt.Println("Entry Id: ", id)
+	err := models.DeleteEntry(id)
+	if err != nil {
+		panic(err)
+	}
+
+	this.Redirect("/admin/entries", 302)
 }
 
 func (this *AdminController) NewEntry() {
@@ -150,7 +174,7 @@ func (this *AdminController) PostNewEntry() {
 		this.Data["PostId"] = "new"
 		this.Data["Message"] = err.Error()
 	} else {
-		this.Data["PostId"] = nid + "/update"
+		this.Data["PostId"] = "update/" + nid
 		this.Data["Message"] = "Post Successful"
 	}
 	this.Data["Entry"] = entry
@@ -175,19 +199,50 @@ func (this *AdminController) Collections() {
 }
 
 func (this *AdminController) Collection() {
+	fmt.Println("Collection")
 	checkLogin(this)
 	this.TplNames = "admin/collection.tpl"
+
+	id := this.Ctx.Input.Param(":id")
+	collection, err := models.CollectionById(id)
+	if err != nil {
+		panic(err)
+	}
 
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["CollectionActive"] = true
+	this.Data["Collection"] = collection
+	this.Data["PostId"] = "update/" + id
 }
 
 func (this *AdminController) UpdateCollection() {
+	this.TplNames = "admin/collection.tpl"
 
+	collection := models.Collection{}
+	err := this.ParseForm(&collection)
+	if err != nil {
+		panic(err)
+	}
+
+	collection.Id = this.Ctx.Input.Param(":id")
+	collection.Author = this.GetSession("user").(string)
+	nid, err := models.UpdateCollection(collection)
+	if err != nil {
+		this.Data["PostId"] = "update/" + collection.Id
+		this.Data["Message"] = err.Error()
+	} else {
+		this.Data["PostId"] = "update/" + nid
+		this.Data["Message"] = "Update Successful"
+	}
+	this.Data["Title"] = "Moonlightter"
+	this.Data["Subtitle"] = "My Programming Life"
+	this.Data["Collection"] = collection
+	this.Data["CollectionActive"] = true
 }
 
 func (this *AdminController) NewCollection() {
+	fmt.Println("New Collection")
 	checkLogin(this)
 	this.TplNames = "admin/collection.tpl"
 
@@ -195,6 +250,19 @@ func (this *AdminController) NewCollection() {
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["CollectionActive"] = true
 	this.Data["PostId"] = "new"
+}
+
+func (this *AdminController) DeleteCollection() {
+	fmt.Println("Delete Collection")
+	this.TplNames = "admin/collection-list.tpl"
+
+	id := this.GetString("id")
+	err := models.DeleteCollection(id)
+	if err != nil {
+		panic(err)
+	}
+
+	this.Redirect("/admin/collections", 302)
 }
 
 func (this *AdminController) CreateCollection() {
@@ -212,7 +280,7 @@ func (this *AdminController) CreateCollection() {
 		this.Data["PostId"] = "new"
 		this.Data["Message"] = err.Error()
 	} else {
-		this.Data["PostId"] = cid + "/update"
+		this.Data["PostId"] = "update/" + cid
 		this.Data["Message"] = "Post Successful"
 	}
 	this.Data["Title"] = "Moonlightter"

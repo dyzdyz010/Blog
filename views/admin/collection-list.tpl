@@ -17,7 +17,7 @@
       <td class="collection-title">{{$c.Title}}</td>
       <td>{{$c.Author}}</td>
       <td><a href="/admin/collections/{{$c.Id}}">Edit</a></td>
-      <td><a href="#">Delete</a></td>
+      <td><a href="/admin/collections/delete?id={{$c.Id}}">Delete</a></td>
     </tr>
     {{end}}
   </tbody>
