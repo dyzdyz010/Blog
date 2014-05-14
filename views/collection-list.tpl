@@ -9,11 +9,6 @@
     <span class="entry-date"><a href=""><i class="icon-calendar"></i>{{$c.Date}}</a></span>
     <span class="delimiter">/</span>
     <span class="entry-author"><a href=""><i class="icon-author"></i>{{$c.Author}}</a></span>
-
-    <div class="like-share">
-      <span class="entry-like"><a href=""><i class="icon-like"></i>{{$c.Likes}} Likes</a></span>
-      <span class="entry-share"><a href=""><i class="icon-share"></i>Share</a></span>
-    </div>
   </div>
 </div>
 {{end}}

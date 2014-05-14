@@ -13,6 +13,36 @@ type Collection struct {
 	Title    string `json:"title" form:"title"`
 	Subtitle string `json:"subtitle" form:"subtitle"`
 	Author   string `json:"author"`
+	Date     string `json:"date"`
+}
+
+func AllCollections() ([]Collection, error) {
+	result, err := db.Do("hsize", h_collection)
+	if err != nil {
+		return []Collection{}, err
+	}
+	size, _ := strconv.Atoi(result[1])
+	if size == 0 {
+		return []Collection{}, nil
+	}
+
+	result, err = db.Do("hscan", h_collection, "", "", size)
+	if err != nil {
+		return []Collection{}, err
+	}
+	status := result[0]
+	if status != "ok" {
+		return []Collection{}, errors.New(status)
+	}
+
+	collections := []Collection{}
+	for i := 2; i < len(result); i += 2 {
+		c := Collection{}
+		_ = json.Unmarshal([]byte(result[i]), &c)
+		collections = append(collections, c)
+	}
+
+	return collections, nil
 }
 
 func CollectionsByUser(name string) ([]Collection, error) {
@@ -21,6 +51,10 @@ func CollectionsByUser(name string) ([]Collection, error) {
 		return []Collection{}, err
 	}
 	size, _ := strconv.Atoi(result[1])
+	if size == 0 {
+		return []Collection{}, nil
+	}
+
 	result, err = db.Do("zscan", "blog_"+name+"_collection", "", "", "", size)
 	if err != nil {
 		return []Collection{}, err
@@ -56,6 +90,7 @@ func CollectionsByUser(name string) ([]Collection, error) {
 
 func CreateCollection(c Collection) (string, error) {
 	c.Id = Hash(c.Title)
+	c.Date = time.Now().Format(time.RFC3339)
 	fmt.Println("Create collection: ", c)
 
 	_, err := CollectionById(c.Id)

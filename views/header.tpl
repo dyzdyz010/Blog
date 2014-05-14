@@ -22,7 +22,7 @@
     <nav class="main-nav">
       <ul>
         <li><a class="{{if .HomeActive}}       active {{end}}" href="/">Home</a></li>
-        <li><a class="{{if .CollectionActive}} active {{end}}" href="#">Collections</a></li>
+        <li><a class="{{if .CollectionActive}} active {{end}}" href="/collections">Collections</a></li>
         <li><a class="{{if .AboutActive}}      active {{end}}" href="#">About</a></li>
       </ul>
     </nav>

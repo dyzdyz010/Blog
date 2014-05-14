@@ -121,5 +121,14 @@ func PostNewEntry(e Entry) (string, error) {
 		return "", errors.New(status)
 	}
 
+	result, err = db.Do("zset", "blog_"+e.Author+"_entry", e.Id, time.Now().Unix())
+	if err != nil {
+		return "", err
+	}
+	status = result[0]
+	if status != "ok" {
+		return "", errors.New(status)
+	}
+
 	return e.Id, nil
 }

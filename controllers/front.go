@@ -33,7 +33,23 @@ func (this *FrontController) Home() {
 }
 
 func (this *FrontController) Collections() {
+	this.TplNames = "collection-list.tpl"
 
+	this.Data["Title"] = "Moonlightter"
+	this.Data["Subtitle"] = "My Programming Life"
+	// Main Nav
+	this.Data["CollectionActive"] = "active"
+
+	// Data Source
+	collections, err := models.AllCollections()
+	if err != nil {
+		panic(err)
+	}
+	this.Data["Collections"] = collections
+
+	// Pagination
+	this.Data["PageNav"] = "true"
+	this.Data["LeftPage"] = "disabled"
 }
 
 func (this *FrontController) Entry() {

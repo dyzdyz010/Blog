@@ -12,7 +12,7 @@ type Author struct {
 }
 
 func AuthorByName(name string) (*Author, error) {
-	result, err := db.Do("hget", "author", name)
+	result, err := db.Do("hget", h_author, name)
 	if err != nil {
 		return nil, err
 	}
