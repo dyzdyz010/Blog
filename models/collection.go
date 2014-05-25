@@ -84,6 +84,8 @@ func CollectionsByUser(name string) ([]Collection, error) {
 	for i := 2; i < len(result); i += 2 {
 		c := Collection{}
 		_ = json.Unmarshal([]byte(result[i]), &c)
+		t, _ := time.Parse(time.RFC3339, c.Date)
+		c.Date = t.Format(time.ANSIC)
 		collections = append(collections, c)
 	}
 

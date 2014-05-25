@@ -7,6 +7,7 @@
 <table class="collection-list">
   <thead>
     <th width="50%">Title</th>
+    <th>Date</th>
     <th>Author</th>
     <th>Edit</th>
     <th>Delete</th>
@@ -15,6 +16,7 @@
     {{range $index, $c := .Collections}}
     <tr>
       <td class="collection-title">{{$c.Title}}</td>
+      <td>{{$c.Date}}</td>
       <td>{{$c.Author}}</td>
       <td><a href="/admin/collections/{{$c.Id}}">Edit</a></td>
       <td><a href="/admin/collections/delete?id={{$c.Id}}">Delete</a></td>
