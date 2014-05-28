@@ -6,11 +6,30 @@ import (
 )
 
 func init() {
+
+	//-------------------------------------------------------------------------------
+	//                Front
+	//-------------------------------------------------------------------------------
+
+	// Front -> Home
 	beego.Router("/", &controllers.FrontController{}, "get:Home")
-	beego.Router("/collections", &controllers.FrontController{}, "get:Collections")
+
+	// Front -> Entry
 	beego.Router("/entry/:id", &controllers.FrontController{}, "get:Entry")
 
-	// Admin
+	// Front -> Collection List
+	beego.Router("/collections", &controllers.FrontController{}, "get:Collections")
+
+	// Front -> Collection's Entry List
+	beego.Router("/collection/:id", &controllers.FrontController{}, "get:Collection")
+
+	// Front ->
+
+	//-------------------------------------------------------------------------------
+	//                Admin
+	//-------------------------------------------------------------------------------
+
+	// Admin -> Dashboard
 	beego.Router("/admin", &controllers.AdminController{}, "get:Dashboard")
 
 	// Admin -> Login

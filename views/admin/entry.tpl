@@ -9,7 +9,7 @@
 
 	<select name="collection">
 	{{range $index, $c := .Collections}}
-	<option>{{$c.Title}}</option>
+	<option value="{{$c.Title}}">{{$c.Title}}</option>
 	{{end}}
 	</select>
 	<input class="post-button" type="submit" value="POST">

@@ -107,8 +107,8 @@ func (this *AdminController) UpdateEntry() {
 	}
 
 	entry.Id = this.Ctx.Input.Param(":id")
-	fmt.Println(entry)
 	entry.Author = this.GetSession("user").(string)
+	entry.Collection = this.Input().Get("collection")
 	nid, err := models.UpdateEntry(entry)
 
 	this.TplNames = "admin/entry.tpl"
@@ -165,6 +165,7 @@ func (this *AdminController) PostNewEntry() {
 		panic(err)
 	}
 	entry.Author = this.GetSession("user").(string)
+	entry.Collection = this.Input().Get("collection")
 	nid, err := models.PostNewEntry(entry)
 	this.TplNames = "admin/entry.tpl"
 	this.Data["Title"] = "Moonlightter"

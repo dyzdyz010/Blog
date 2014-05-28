@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -42,6 +43,56 @@ func PublishedEntries() (entries []Entry) {
 		}
 	}
 	return entries
+}
+
+func EntriesByCollection(cid string) ([]Entry, error) {
+	c, err := CollectionById(cid)
+	if err != nil {
+		panic(err)
+	}
+	result, err := db.Do("zsize", "blog_"+c.Title+"_entry")
+	if err != nil {
+		return []Entry{}, err
+	}
+	size, _ := strconv.Atoi(result[1])
+	if size == 0 {
+		return []Entry{}, nil
+	}
+
+	result, err = db.Do("zscan", "blog_"+c.Title+"_entry", "", "", "", size)
+	if err != nil {
+		return []Entry{}, err
+	}
+	status := result[0]
+	if status != "ok" {
+		return []Entry{}, errors.New(status)
+	}
+
+	eids := make([]string, 0)
+	for i := 1; i < len(result); i += 2 {
+		eids = append(eids, result[i])
+	}
+
+	result, err = db.Do("multi_hget", h_entry, eids)
+	if err != nil {
+		return []Entry{}, err
+	}
+	status = result[0]
+	if status != "ok" {
+		return []Entry{}, errors.New(status)
+	}
+
+	fmt.Println(result)
+	entries := []Entry{}
+	for i := len(result) - 1; i > 1; i -= 2 {
+		c := Entry{}
+		_ = json.Unmarshal([]byte(result[i]), &c)
+		t, _ := time.Parse(time.RFC3339, c.Date)
+		c.Date = t.Format(time.ANSIC)
+		entries = append(entries, c)
+	}
+
+	return entries, nil
 }
 
 func EntryById(id string) *Entry {
@@ -100,6 +151,16 @@ func DeleteEntry(id string) error {
 		return errors.New(status)
 	}
 
+	e := EntryById(id)
+	result, err = db.Do("zdel", "blog_"+e.Collection+"_entry", id)
+	if err != nil {
+		return err
+	}
+	status = result[0]
+	if status != "ok" {
+		return errors.New(status)
+	}
+
 	return nil
 }
 
@@ -122,6 +183,15 @@ func PostNewEntry(e Entry) (string, error) {
 	}
 
 	result, err = db.Do("zset", "blog_"+e.Author+"_entry", e.Id, time.Now().Unix())
+	if err != nil {
+		return "", err
+	}
+	status = result[0]
+	if status != "ok" {
+		return "", errors.New(status)
+	}
+
+	result, err = db.Do("zset", "blog_"+e.Collection+"_entry", e.Id, time.Now().Unix())
 	if err != nil {
 		return "", err
 	}

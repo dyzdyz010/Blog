@@ -29,7 +29,7 @@ func (this *FrontController) Home() {
 	this.Data["PageNav"] = "true"
 	this.Data["LeftPage"] = "disabled"
 
-	this.TplNames = "index.tpl"
+	this.TplNames = "entry-list.tpl"
 }
 
 func (this *FrontController) Collections() {
@@ -50,6 +50,21 @@ func (this *FrontController) Collections() {
 	// Pagination
 	this.Data["PageNav"] = "true"
 	this.Data["LeftPage"] = "disabled"
+}
+
+func (this *FrontController) Collection() {
+	cid := this.Ctx.Input.Param(":id")
+	collection, err := models.CollectionById(cid)
+	if err != nil {
+		panic(err)
+	}
+
+	entries, _ := models.EntriesByCollection(cid)
+
+	this.TplNames = "entry-list.tpl"
+	this.Data["Title"] = collection.Title
+	this.Data["Subtitle"] = collection.Subtitle
+	this.Data["Entries"] = entries
 }
 
 func (this *FrontController) Entry() {
