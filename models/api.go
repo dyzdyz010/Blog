@@ -100,12 +100,12 @@ func zset(name, key, score string) error {
 	return nil
 }
 
-func zdel(name, key) error {
-	result, err = db.Do("zdel", name, key)
+func zdel(name, key string) error {
+	result, err := db.Do("zdel", name, key)
 	if err != nil {
 		return err
 	}
-	status = result[0]
+	status := result[0]
 	if status != "ok" {
 		return errors.New(status)
 	}
