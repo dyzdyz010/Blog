@@ -348,7 +348,7 @@
 			}
 
 			select {
-				@include appearance(none);
+				
 				padding: 5px 10px;
 				outline: none;
 				border-color: #E6E6E6;
@@ -358,6 +358,9 @@
 				text-transform: uppercase;
 				font-size: rem-calc(18);
 				font-family: "Cabin", Helvetica, Arial, sans-serif;
+				// @include appearance(none);
+				-webkit-appearance: none;
+				-moz-appearance: none;
 				option {
 					text-transform: uppercase;
 				}
