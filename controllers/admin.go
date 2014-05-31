@@ -77,7 +77,7 @@ func (this *AdminController) Entry() {
 	eid := this.Ctx.Input.Param(":id")
 	fmt.Println(eid)
 	if eid != "new" {
-		entry := models.EntryById(eid)
+		entry, _ := models.EntryById(eid)
 		if entry == nil {
 			this.Abort("404")
 			return
@@ -109,15 +109,15 @@ func (this *AdminController) UpdateEntry() {
 	entry.Id = this.Ctx.Input.Param(":id")
 	entry.Author = this.GetSession("user").(string)
 	entry.Collection = this.Input().Get("collection")
-	nid, err := models.UpdateEntry(entry)
+	err = models.UpdateEntry(entry)
+	if err != nil {
+		panic(err)
+	}
 
 	this.TplNames = "admin/entry.tpl"
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["EntryActive"] = true
-	if err == nil {
-		entry.Id = nid
-	}
 	this.Data["PostId"] = "update/" + entry.Id
 	this.Data["Entry"] = entry
 	this.Data["MarkdownEnabled"] = true
@@ -177,6 +177,12 @@ func (this *AdminController) PostNewEntry() {
 	} else {
 		this.Data["PostId"] = "update/" + nid
 		this.Data["Message"] = "Post Successful"
+
+		collections, err := models.CollectionsByUser(this.GetSession("user").(string))
+		if err != nil {
+			panic(err)
+		}
+		this.Data["Collections"] = collections
 	}
 	this.Data["Entry"] = entry
 	this.Data["MarkdownEnabled"] = true

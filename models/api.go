@@ -2,8 +2,13 @@ package models
 
 import (
 	"errors"
+	// "fmt"
 	"strconv"
 )
+
+func zname(name, entity string) string {
+	return "blog_" + name + "_" + entity
+}
 
 func hsize(name string) (int, error) {
 	result, err := db.Do("hsize", name)
@@ -87,7 +92,7 @@ func zsize(name string) (int, error) {
 	return size, nil
 }
 
-func zset(name, key, score string) error {
+func zset(name, key string, score int64) error {
 	result, err := db.Do("zset", name, key, score)
 	if err != nil {
 		return err
@@ -114,7 +119,7 @@ func zdel(name, key string) error {
 }
 
 func zscan(name, key_start, score_start, score_end string, limit int) ([]string, error) {
-	result, err := db.Do("zscan", key_start, score_start, score_end, limit)
+	result, err := db.Do("zscan", name, key_start, score_start, score_end, limit)
 	if err != nil {
 		return nil, err
 	}

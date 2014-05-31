@@ -2,9 +2,8 @@ package models
 
 import (
 	"encoding/json"
-	"errors"
+	// "errors"
 	"fmt"
-	"strconv"
 	"time"
 )
 
@@ -50,41 +49,30 @@ func EntriesByCollection(cid string) ([]Entry, error) {
 	if err != nil {
 		panic(err)
 	}
-	result, err := db.Do("zsize", "blog_"+c.Title+"_entry")
+
+	size, err := zsize(zname(c.Title, "entry"))
 	if err != nil {
-		return []Entry{}, err
-	}
-	size, _ := strconv.Atoi(result[1])
-	if size == 0 {
-		return []Entry{}, nil
+		return nil, err
 	}
 
-	result, err = db.Do("zscan", "blog_"+c.Title+"_entry", "", "", "", size)
+	result, err := zscan(zname(c.Title, "entry"), "", "", "", size)
 	if err != nil {
-		return []Entry{}, err
-	}
-	status := result[0]
-	if status != "ok" {
-		return []Entry{}, errors.New(status)
+		panic(err)
+		return nil, err
 	}
 
 	eids := make([]string, 0)
-	for i := 1; i < len(result); i += 2 {
+	for i := 0; i < len(result); i += 2 {
 		eids = append(eids, result[i])
 	}
 
-	result, err = db.Do("multi_hget", h_entry, eids)
+	result, err = multi_hget(h_entry, eids)
 	if err != nil {
-		return []Entry{}, err
-	}
-	status = result[0]
-	if status != "ok" {
-		return []Entry{}, errors.New(status)
+		return nil, err
 	}
 
-	fmt.Println(result)
 	entries := []Entry{}
-	for i := len(result) - 1; i > 1; i -= 2 {
+	for i := len(result) - 1; i > 0; i -= 2 {
 		c := Entry{}
 		_ = json.Unmarshal([]byte(result[i]), &c)
 		t, _ := time.Parse(time.RFC3339, c.Date)
@@ -95,70 +83,47 @@ func EntriesByCollection(cid string) ([]Entry, error) {
 	return entries, nil
 }
 
-func EntryById(id string) *Entry {
-	// fmt.Println(id)
-	result, err := db.Do("hget", h_entry, id)
+func EntryById(id string) (*Entry, error) {
+	eStr, err := hget(h_entry, id)
 	if err != nil {
 		panic(err)
-		return nil
-	}
-	status := result[0]
-	if status != "ok" {
-		return nil
+		return nil, err
 	}
 
 	entry := &Entry{}
-	json.Unmarshal([]byte(result[1]), entry)
+	json.Unmarshal([]byte(eStr), entry)
 	t, _ := time.Parse(time.RFC3339, entry.Date)
 	entry.Date = t.Format(time.ANSIC)
 
-	return entry
+	return entry, nil
 }
 
-func UpdateEntry(e Entry) (string, error) {
-	oid := e.Id
-	nid := Hash(e.Title)
-
-	_, err := db.Do("hdel", h_entry, oid)
-	if err != nil {
-		return "", err
-	}
-
-	e.Id = nid
+func UpdateEntry(e Entry) error {
 	t := time.Now()
 	e.Date = t.Format(time.RFC3339)
 
 	ebytes, _ := json.Marshal(e)
-	result, err := db.Do("hset", h_entry, e.Id, string(ebytes))
+	err := hset(h_entry, e.Id, string(ebytes))
 	if err != nil {
-		return "", err
+		return err
 	}
-	status := result[0]
-	if status != "ok" {
-		return "", errors.New(status)
-	}
-
-	return e.Id, nil
+	return nil
 }
 
 func DeleteEntry(id string) error {
-	result, err := db.Do("hdel", h_entry, id)
+	e, err := EntryById(id)
 	if err != nil {
 		return err
-	}
-	status := result[0]
-	if status != "ok" {
-		return errors.New(status)
 	}
 
-	e := EntryById(id)
-	result, err = db.Do("zdel", "blog_"+e.Collection+"_entry", id)
+	err = hdel(h_entry, id)
 	if err != nil {
 		return err
 	}
-	status = result[0]
-	if status != "ok" {
-		return errors.New(status)
+
+	err = zdel(zname(e.Collection, "entry"), id)
+	if err != nil {
+		return err
 	}
 
 	return nil
@@ -173,31 +138,44 @@ func PostNewEntry(e Entry) (string, error) {
 	e.Status = "published"
 
 	ebytes, _ := json.Marshal(e)
-	result, err := db.Do("hset", h_entry, e.Id, string(ebytes))
+	// result, err := db.Do("hset", h_entry, e.Id, string(ebytes))
+	// if err != nil {
+	// 	return "", err
+	// }
+	// status := result[0]
+	// if status != "ok" {
+	// 	return "", errors.New(status)
+	// }
+	err := hset(h_entry, e.Id, string(ebytes))
 	if err != nil {
 		return "", err
-	}
-	status := result[0]
-	if status != "ok" {
-		return "", errors.New(status)
 	}
 
-	result, err = db.Do("zset", "blog_"+e.Author+"_entry", e.Id, time.Now().Unix())
+	// result, err = db.Do("zset", "blog_"+e.Author+"_entry", e.Id, time.Now().Unix())
+	// if err != nil {
+	// 	return "", err
+	// }
+	// status = result[0]
+	// if status != "ok" {
+	// 	return "", errors.New(status)
+	// }
+	score := time.Now().Unix()
+	err = zset(zname(e.Author, "entry"), e.Id, score)
 	if err != nil {
 		return "", err
-	}
-	status = result[0]
-	if status != "ok" {
-		return "", errors.New(status)
 	}
 
-	result, err = db.Do("zset", "blog_"+e.Collection+"_entry", e.Id, time.Now().Unix())
+	// result, err = db.Do("zset", "blog_"+e.Collection+"_entry", e.Id, time.Now().Unix())
+	// if err != nil {
+	// 	return "", err
+	// }
+	// status = result[0]
+	// if status != "ok" {
+	// 	return "", errors.New(status)
+	// }
+	err = zset(zname(e.Collection, "entry"), e.Id, score)
 	if err != nil {
 		return "", err
-	}
-	status = result[0]
-	if status != "ok" {
-		return "", errors.New(status)
 	}
 
 	return e.Id, nil

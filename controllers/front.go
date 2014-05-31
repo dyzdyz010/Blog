@@ -59,7 +59,10 @@ func (this *FrontController) Collection() {
 		panic(err)
 	}
 
-	entries, _ := models.EntriesByCollection(cid)
+	entries, err := models.EntriesByCollection(cid)
+	if err != nil {
+		// panic(err)
+	}
 
 	this.TplNames = "entry-list.tpl"
 	this.Data["Title"] = collection.Title
@@ -69,7 +72,7 @@ func (this *FrontController) Collection() {
 
 func (this *FrontController) Entry() {
 	eid := this.Ctx.Input.Param(":id")
-	entry := models.EntryById(eid)
+	entry, _ := models.EntryById(eid)
 	// fmt.Println(entry)
 
 	this.TplNames = "entry.tpl"
