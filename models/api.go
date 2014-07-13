@@ -77,6 +77,19 @@ func hdel(name, key string) error {
 	return nil
 }
 
+func hscan(name, key_start, key_end string, limit int) ([]string, error) {
+	result, err := db.Do("hscan", name, key_start, key_end, limit)
+	if err != nil {
+		return nil, err
+	}
+	status := result[0]
+	if status != "ok" {
+		return nil, errors.New(status)
+	}
+
+	return result[1:], nil
+}
+
 func zsize(name string) (int, error) {
 	result, err := db.Do("zsize", name)
 	if err != nil {

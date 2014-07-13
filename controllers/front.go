@@ -11,14 +11,17 @@ type FrontController struct {
 	beego.Controller
 }
 
+func (this *FrontController) Prepare() {
+	this.Data["Title"] = "Moonlightter"
+	this.Data["Subtitle"] = "My Programming Life"
+}
+
 func (this *FrontController) Home() {
 	value := "2014-04-20T15:13:09+08:00"
 	t, _ := time.Parse(time.RFC3339, value)
 	timeStr := fmt.Sprintf("%s %d, %d", t.Month().String(), t.Day(), t.Year())
 	fmt.Println(timeStr)
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	// Main Nav
 	this.Data["HomeActive"] = "active"
 
@@ -35,8 +38,6 @@ func (this *FrontController) Home() {
 func (this *FrontController) Collections() {
 	this.TplNames = "collection-list.tpl"
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	// Main Nav
 	this.Data["CollectionActive"] = "active"
 
@@ -77,8 +78,6 @@ func (this *FrontController) Entry() {
 
 	this.TplNames = "entry.tpl"
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	fmt.Println(entry.Content)
 	this.Data["Entry"] = entry
 	this.Data["MarkdownEnabled"] = true

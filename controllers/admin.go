@@ -54,6 +54,8 @@ func (this *AdminController) PostLogin() {
 		this.SetSession("user", author.Name)
 		this.Redirect("/admin", 302)
 	}
+	this.Data["Title"] = "Moonlightter"
+	this.Data["Subtitle"] = "My Programming Life"
 }
 
 // Entry Operations
