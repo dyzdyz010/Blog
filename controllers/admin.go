@@ -107,6 +107,9 @@ func (this *AdminController) Entry() {
 		panic(err)
 	}
 	this.Data["Collections"] = collections
+	fmt.Println(this.Data["Entry"])
+
+	renderTemplate(this.Ctx, "views/admin/entry.amber", this.Data)
 }
 
 func (this *AdminController) UpdateEntry() {
@@ -137,6 +140,8 @@ func (this *AdminController) UpdateEntry() {
 	}
 	this.Data["Collections"] = collections
 	this.Data["Message"] = "Update Successful"
+
+	renderTemplate(this.Ctx, "views/admin/entry.amber", this.Data)
 }
 
 func (this *AdminController) DeleteEntry() {
@@ -233,6 +238,8 @@ func (this *AdminController) Collection() {
 	this.Data["CollectionActive"] = true
 	this.Data["Collection"] = collection
 	this.Data["PostId"] = "update/" + id
+
+	renderTemplate(this.Ctx, "views/admin/collection.amber", this.Data)
 }
 
 func (this *AdminController) UpdateCollection() {
@@ -258,6 +265,8 @@ func (this *AdminController) UpdateCollection() {
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["Collection"] = collection
 	this.Data["CollectionActive"] = true
+
+	renderTemplate(this.Ctx, "views/admin/collection.amber", this.Data)
 }
 
 func (this *AdminController) NewCollection() {

@@ -9,12 +9,12 @@ block content
 			div.entry-meta
 				span.entry-date
 					a[href="#"] 
-						i.icon-calendar
+						i.fi-calendar
 						| #{$c.Date}
 				span.delimiter /
 				span.entry-author
 					a[href="#"]
-						i.icon-author
+						i.fi-torso
 						| #{$c.Author}
 
 block scripts

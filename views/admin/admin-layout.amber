@@ -62,3 +62,6 @@ html
 
 		import footer
 		block scripts
+
+		script
+			$(document).foundation();

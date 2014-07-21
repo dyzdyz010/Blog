@@ -9,20 +9,25 @@ block content
 		div.entry-meta
 			span.entry-date
 				a[href="#"] 
-					i.icon-calendar
+					i.fi-calendar
 					| #{Entry.Date}
 			span.delimiter /
 			span.entry-author
 				a[href="#"]
-					i.icon-author
+					i.fi-torso
 					| #{Entry.Author}
 
 			div.like-share
 				span.entry-like
 					a[href="#"]
-						i.icon-like
+						i.fi-heart
 						| #{Entry.Likes}
 				span.entry-share
 					a[href="#"]
-						i.icon-share
+						i.fi-share
 						| Share
+
+block scripts
+	script[type="text/javascript"][src="//cdn.staticfile.org/marked/0.3.2/marked.min.js"]
+	script[type="text/javascript"][src="/static/js/highlight.pack.js"]
+	script[type="text/javascript"][src="/static/js/markdown-front.js"]

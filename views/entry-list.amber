@@ -9,22 +9,22 @@ block content
 			div.entry-meta
 				span.entry-date
 					a[href="#"] 
-						i.icon-calendar
+						i.fi-calendar
 						| #{$e.Date}
 				span.delimiter /
 				span.entry-author
 					a[href="#"]
-						i.icon-author
+						i.fi-torso
 						| #{$e.Author}
 
 				div.like-share
 					span.entry-like
 						a[href="#"]
-							i.icon-like
+							i.fi-heart
 							| #{$e.Likes}
 					span.entry-share
 						a[href="#"]
-							i.icon-share
+							i.fi-share
 							| Share
 
 block scripts
