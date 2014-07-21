@@ -1,0 +1,47 @@
+extends admin-layout
+block content
+	div.collection-new
+		a[href="/admin/collections/new"] New
+
+	table.collection-list
+		thead
+			th[width="50%"] Title
+			th Date
+			th Author
+			th Edit
+			th Delete
+		tbody
+			each $i, $c in Collections
+				tr
+					td #{$c.Title}
+					td #{$c.Date}
+					td #{$c.Author}
+					td
+						a[href="/admin/collections/" + $c.Id] Edit
+					td
+						a[href="/admin/collections/delete?id=" + $c.Id] Delete
+
+//- <div class="collection-new">
+//-   <a href="/admin/collections/new">New</a>
+//- </div>
+
+//- <table class="collection-list">
+//-   <thead>
+//-     <th width="50%">Title</th>
+//-     <th>Date</th>
+//-     <th>Author</th>
+//-     <th>Edit</th>
+//-     <th>Delete</th>
+//-   </thead>
+//-   <tbody>
+//-     {{range $index, $c := .Collections}}
+//-     <tr>
+//-       <td class="collection-title">{{$c.Title}}</td>
+//-       <td>{{$c.Date}}</td>
+//-       <td>{{$c.Author}}</td>
+//-       <td><a href="/admin/collections/{{$c.Id}}">Edit</a></td>
+//-       <td><a href="/admin/collections/delete?id={{$c.Id}}">Delete</a></td>
+//-     </tr>
+//-     {{end}}
+//-   </tbody>
+//- </table>

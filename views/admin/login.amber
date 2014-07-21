@@ -1,0 +1,14 @@
+extends admin-layout
+block content
+	form.login[action="/admin/login"][method="POST"]
+		input.login-name[type="text"][placeholder="Name"][name="name"]
+		input.login-password[type="password"][placeholder="Password"][name="password"]
+		input.post-button[type="submit"][value="LOGIN"]
+		div.msg #{Message}
+
+//- <form class="login" action="/admin/login" method="POST">
+//- 	<input type="text" class="login-name" placeholder="Name" name="name">
+//- 	<input type="password" class="login-password" placeholder="Password" name="password">
+//- 	<input class="post-button" type="submit" value="LOGIN">
+//- 	<div class="msg">{{.Message}}</div>
+//- </form>

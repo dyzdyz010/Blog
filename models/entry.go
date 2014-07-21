@@ -99,6 +99,7 @@ func EntryById(id string) (*Entry, error) {
 }
 
 func UpdateEntry(e Entry) error {
+	fmt.Println(e)
 	t := time.Now()
 	e.Date = t.Format(time.RFC3339)
 

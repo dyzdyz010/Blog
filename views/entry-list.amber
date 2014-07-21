@@ -1,0 +1,30 @@
+extends front-layout
+block content
+	each $i, $e in Entries
+		div.row.entry
+			h2.entry-title
+				a[href="/entry/" + $e.Id] #{$e.Title}
+			h3.entry-subtitle #{$e.Subtitle}
+
+			div.entry-meta
+				span.entry-date
+					a[href="#"] 
+						i.icon-calendar
+						| #{$e.Date}
+				span.delimiter /
+				span.entry-author
+					a[href="#"]
+						i.icon-author
+						| #{$e.Author}
+
+				div.like-share
+					span.entry-like
+						a[href="#"]
+							i.icon-like
+							| #{$e.Likes}
+					span.entry-share
+						a[href="#"]
+							i.icon-share
+							| Share
+
+block scripts

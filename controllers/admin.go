@@ -25,6 +25,8 @@ func (this *AdminController) Dashboard() {
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["DashboardActive"] = true
+
+	renderTemplate(this.Ctx, "views/admin/dashboard.amber", this.Data)
 }
 
 // Login
@@ -34,6 +36,8 @@ func (this *AdminController) Login() {
 
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
+
+	renderTemplate(this.Ctx, "views/admin/login.amber", this.Data)
 }
 
 func (this *AdminController) PostLogin() {
@@ -56,6 +60,8 @@ func (this *AdminController) PostLogin() {
 	}
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
+
+	renderTemplate(this.Ctx, "views/admin/login.amber", this.Data)
 }
 
 // Entry Operations
@@ -70,6 +76,8 @@ func (this *AdminController) Entries() {
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["EntryActive"] = true
 	this.Data["Entries"] = entries
+
+	renderTemplate(this.Ctx, "views/admin/entry-list.amber", this.Data)
 }
 
 func (this *AdminController) Entry() {
@@ -205,6 +213,8 @@ func (this *AdminController) Collections() {
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["CollectionActive"] = true
 	this.Data["Collections"] = collections
+
+	renderTemplate(this.Ctx, "views/admin/collection-list.amber", this.Data)
 }
 
 func (this *AdminController) Collection() {

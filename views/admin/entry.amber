@@ -1,4 +1,13 @@
-{{template "admin/header.tpl" .}}
+extends admin-layout
+block content
+	div#body
+		form.entry[action="/admin/entries/" + PostId][method="POST"]
+			input.entry-title[type="text"][name="title"][value=Entry.Title][placeholder="Title"]
+			input.entry-subtitle[type="text"][name="subtitle"][value=Entry.Subtitle][placeholder="Subtitle"]
+			textarea.entry-content-edit[type="text"][name="content"][placeholder="Content"] #{Entry.Content}
+			div.entry-content
+
+			h1 #{Entry.Collection}
 
 <div id="body">
 <form class="entry" action="/admin/entries/{{.PostId}}" method="POST">
@@ -27,5 +36,3 @@
 	<div class="msg">{{.Message}}</div>
 </form>
 </div>
-
-{{template "admin/footer.tpl" .}}

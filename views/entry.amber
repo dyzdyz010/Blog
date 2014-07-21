@@ -1,0 +1,28 @@
+extends front-layout
+block content
+	div.row.entry
+		h2.entry-title #{Entry.Title}
+		h3.entry-subtitle #{Entry.Subtitle}
+
+		div.entry-content #{Entry.Content}
+
+		div.entry-meta
+			span.entry-date
+				a[href="#"] 
+					i.icon-calendar
+					| #{Entry.Date}
+			span.delimiter /
+			span.entry-author
+				a[href="#"]
+					i.icon-author
+					| #{Entry.Author}
+
+			div.like-share
+				span.entry-like
+					a[href="#"]
+						i.icon-like
+						| #{Entry.Likes}
+				span.entry-share
+					a[href="#"]
+						i.icon-share
+						| Share

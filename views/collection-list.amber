@@ -1,0 +1,20 @@
+extends front-layout
+block content
+	each $i, $c in Collections
+		div.row.entry
+			h2.entry-title
+				a[href="/collection/" + $c.Id] #{$c.Title}
+			h3.entry-subtitle #{$c.Subtitle}
+
+			div.entry-meta
+				span.entry-date
+					a[href="#"] 
+						i.icon-calendar
+						| #{$c.Date}
+				span.delimiter /
+				span.entry-author
+					a[href="#"]
+						i.icon-author
+						| #{$c.Author}
+
+block scripts

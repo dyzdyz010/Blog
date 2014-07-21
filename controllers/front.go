@@ -33,6 +33,28 @@ func (this *FrontController) Home() {
 	this.Data["LeftPage"] = "disabled"
 
 	this.TplNames = "entry-list.tpl"
+	// this.Ctx.WriteString("<h1>Hello world!</h1>")
+
+	renderTemplate(this.Ctx, "views/entry-list.amber", this.Data)
+
+	// fmt.Println(this.Data)
+	// compiler := amber.New()
+	// err := compiler.ParseFile("views/entry-list.amber")
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// tpl, err := compiler.Compile()
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// var content bytes.Buffer
+	// _, err = json.Marshal(this.Data)
+	// err = tpl.Execute(&content, this.Data)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// this.Ctx.WriteString(content.String())
 }
 
 func (this *FrontController) Collections() {
@@ -51,6 +73,8 @@ func (this *FrontController) Collections() {
 	// Pagination
 	this.Data["PageNav"] = "true"
 	this.Data["LeftPage"] = "disabled"
+
+	renderTemplate(this.Ctx, "views/collection-list.amber", this.Data)
 }
 
 func (this *FrontController) Collection() {
@@ -69,6 +93,8 @@ func (this *FrontController) Collection() {
 	this.Data["Title"] = collection.Title
 	this.Data["Subtitle"] = collection.Subtitle
 	this.Data["Entries"] = entries
+
+	renderTemplate(this.Ctx, "views/entry-list.amber", this.Data)
 }
 
 func (this *FrontController) Entry() {
@@ -81,4 +107,6 @@ func (this *FrontController) Entry() {
 	fmt.Println(entry.Content)
 	this.Data["Entry"] = entry
 	this.Data["MarkdownEnabled"] = true
+
+	renderTemplate(this.Ctx, "views/entry.amber", this.Data)
 }

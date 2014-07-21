@@ -1,0 +1,58 @@
+doctype 5
+html
+	head
+		title #{Title}
+		meta[name="viewport"][content="width=device-width, initial-scale=1.0"]
+		link[rel="stylesheet"][type="text/css"][href="http://fonts.googleapis.com/css?family=Cabin|Open+Sans:400italic,400,600,300"]
+		link[rel="stylesheet"][type="text/css"][href="/static/css/app.css"]
+		if MarkdownEnabled
+			link[rel="stylesheet"][type="text/css"][href="/static/css/monokai_sublime.css"]
+
+	body
+		div#site
+			header
+				h1.blog-title #{Title}
+				p.blog-subtitle #{Subtitle}
+
+				nav.main-nav
+					ul
+						li
+							a
+								.active ? HomeActive
+								[href="/"]
+								| Home
+						li
+							a
+								.active ? CollectionActive
+								[href="/collections"]
+								| Collections
+						li
+							a
+								.active ? AboutActive
+								[href="#"]
+								| About
+
+			div#body
+				block content
+
+			if PageNav
+				import pagination
+
+			footer#footer
+				div.social
+					a.icon-social-github[href="#"]
+					a.icon-social-dribbble[href="#"]
+					a.icon-social-linkedin[href="#"]
+				div.links
+					p
+						span © 2014 
+						a[href="#"] blog.duyizhuo.com
+						| | 
+						a[href="#"] About
+						| | 
+						a[href="mailto:dyzdyz010@sina.com"] Contact
+						| | 
+						a[href="#"] RSS
+
+		import footer
+		block scripts
