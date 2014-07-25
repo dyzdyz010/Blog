@@ -3,12 +3,12 @@ div.pagination
 		ul
 			li
 				a[class=LeftPage][href="#"]
-					i.icon-arrow-left
+					i.fi-arrow-left
 					| Newer
 			li
 				a[class=RightPage][href="#"]
 					| Older
-					i.icon-arrow-right
+					i.fi-arrow-right
 
 //- <div class="pagination">
 //-   <nav class="page-nav">

@@ -11,7 +11,7 @@ block content
 			select[name="collection"][value=$EntryCollection]
 				option
 					[value="none"]
-					[selected="selected"] ? $EntryCollection == ""
+					[selected="selected"] ? $EntryCollection == "none"
 					| None
 				each $i, $c in Collections
 					option
