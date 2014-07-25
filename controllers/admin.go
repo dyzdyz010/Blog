@@ -278,6 +278,8 @@ func (this *AdminController) NewCollection() {
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["CollectionActive"] = true
 	this.Data["PostId"] = "new"
+
+	renderTemplate(this.Ctx, "views/admin/collection.amber", this.Data)
 }
 
 func (this *AdminController) DeleteCollection() {
@@ -315,4 +317,6 @@ func (this *AdminController) CreateCollection() {
 	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["Collection"] = collection
 	this.Data["CollectionActive"] = true
+
+	renderTemplate(this.Ctx, "views/admin/collection.amber", this.Data)
 }

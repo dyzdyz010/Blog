@@ -105,6 +105,19 @@ func zsize(name string) (int, error) {
 	return size, nil
 }
 
+func zget(name, key string) (string, error) {
+	result, err := db.Do("zget", name, key)
+	if err != nil {
+		return "", err
+	}
+	status := result[0]
+	if status != "ok" {
+		return "", errors.New(status)
+	}
+
+	return result[1], nil
+}
+
 func zset(name, key string, score int64) error {
 	result, err := db.Do("zset", name, key, score)
 	if err != nil {

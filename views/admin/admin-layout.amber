@@ -39,6 +39,11 @@ html
 								| About
 
 			div#admin
+				//- Notification
+				if Message
+					div.alert-box.success.radius.msg[data-alert]
+						| #{Message}
+						a.close &times;
 				block content
 
 			if PageNav

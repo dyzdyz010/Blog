@@ -86,7 +86,6 @@ func EntriesByCollection(cid string) ([]Entry, error) {
 func EntryById(id string) (*Entry, error) {
 	eStr, err := hget(h_entry, id)
 	if err != nil {
-		panic(err)
 		return nil, err
 	}
 
@@ -103,11 +102,31 @@ func UpdateEntry(e Entry) error {
 	t := time.Now()
 	e.Date = t.Format(time.RFC3339)
 
-	ebytes, _ := json.Marshal(e)
-	err := hset(h_entry, e.Id, string(ebytes))
+	eStr, err := hget(h_entry, e.Id)
 	if err != nil {
 		return err
 	}
+
+	oldEntry := &Entry{}
+	json.Unmarshal([]byte(eStr), oldEntry)
+
+	ebytes, _ := json.Marshal(e)
+	err = hset(h_entry, e.Id, string(ebytes))
+	if err != nil {
+		return err
+	}
+
+	if oldEntry.Collection != e.Collection && oldEntry.Collection != "none" {
+		err = zdel(zname(oldEntry.Collection, "entry"), e.Id)
+		if err != nil {
+			return err
+		}
+	}
+
+	if e.Collection != "none" {
+		zset(zname(e.Collection, "entry"), e.Id, t.Unix())
+	}
+
 	return nil
 }
 
@@ -127,6 +146,11 @@ func DeleteEntry(id string) error {
 		return err
 	}
 
+	err = zdel(zname(e.Author, "entry"), id)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -139,41 +163,17 @@ func PostNewEntry(e Entry) (string, error) {
 	e.Status = "published"
 
 	ebytes, _ := json.Marshal(e)
-	// result, err := db.Do("hset", h_entry, e.Id, string(ebytes))
-	// if err != nil {
-	// 	return "", err
-	// }
-	// status := result[0]
-	// if status != "ok" {
-	// 	return "", errors.New(status)
-	// }
 	err := hset(h_entry, e.Id, string(ebytes))
 	if err != nil {
 		return "", err
 	}
 
-	// result, err = db.Do("zset", "blog_"+e.Author+"_entry", e.Id, time.Now().Unix())
-	// if err != nil {
-	// 	return "", err
-	// }
-	// status = result[0]
-	// if status != "ok" {
-	// 	return "", errors.New(status)
-	// }
-	score := time.Now().Unix()
+	score := t.Unix()
 	err = zset(zname(e.Author, "entry"), e.Id, score)
 	if err != nil {
 		return "", err
 	}
 
-	// result, err = db.Do("zset", "blog_"+e.Collection+"_entry", e.Id, time.Now().Unix())
-	// if err != nil {
-	// 	return "", err
-	// }
-	// status = result[0]
-	// if status != "ok" {
-	// 	return "", errors.New(status)
-	// }
 	err = zset(zname(e.Collection, "entry"), e.Id, score)
 	if err != nil {
 		return "", err

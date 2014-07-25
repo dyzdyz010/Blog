@@ -1,9 +1,5 @@
 extends admin-layout
 block content
-	if Message
-		div.alert-box.success.radius.msg[data-alert]
-			| #{Message}
-			a.close &times;
 	div#body
 		form.entry[action="/admin/entries/" + PostId][method="POST"]
 			input.entry-title[type="text"][name="title"][value=Entry.Title][placeholder="Title"]
@@ -14,6 +10,7 @@ block content
 			$EntryCollection = Entry.Collection
 			select[name="collection"][value=$EntryCollection]
 				option
+					[value="none"]
 					[selected="selected"] ? $EntryCollection == ""
 					| None
 				each $i, $c in Collections
