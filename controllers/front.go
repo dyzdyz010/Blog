@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/dyzdyz010/Blog/models"
-	"time"
 )
 
 type FrontController struct {
@@ -17,11 +16,6 @@ func (this *FrontController) Prepare() {
 }
 
 func (this *FrontController) Home() {
-	value := "2014-04-20T15:13:09+08:00"
-	t, _ := time.Parse(time.RFC3339, value)
-	timeStr := fmt.Sprintf("%s %d, %d", t.Month().String(), t.Day(), t.Year())
-	fmt.Println(timeStr)
-
 	// Main Nav
 	this.Data["HomeActive"] = "active"
 
@@ -33,28 +27,8 @@ func (this *FrontController) Home() {
 	this.Data["LeftPage"] = "disabled"
 
 	this.TplNames = "entry-list.tpl"
-	// this.Ctx.WriteString("<h1>Hello world!</h1>")
 
 	renderTemplate(this.Ctx, "views/entry-list.amber", this.Data)
-
-	// fmt.Println(this.Data)
-	// compiler := amber.New()
-	// err := compiler.ParseFile("views/entry-list.amber")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// tpl, err := compiler.Compile()
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// var content bytes.Buffer
-	// _, err = json.Marshal(this.Data)
-	// err = tpl.Execute(&content, this.Data)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// this.Ctx.WriteString(content.String())
 }
 
 func (this *FrontController) Collections() {
