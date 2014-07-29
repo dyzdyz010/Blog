@@ -70,7 +70,10 @@ func (this *AdminController) Entries() {
 	checkLogin(this)
 	this.TplNames = "admin/entry-list.tpl"
 
-	entries := models.PublishedEntries()
+	entries, err := models.AllEntries()
+	if err != nil {
+		panic(err)
+	}
 
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"
@@ -171,6 +174,8 @@ func (this *AdminController) NewEntry() {
 		panic(err)
 	}
 	this.Data["Collections"] = collections
+
+	renderTemplate(this.Ctx, "views/admin/entry.amber", this.Data)
 }
 
 func (this *AdminController) PostNewEntry() {
@@ -201,6 +206,8 @@ func (this *AdminController) PostNewEntry() {
 	}
 	this.Data["Entry"] = entry
 	this.Data["MarkdownEnabled"] = true
+
+	renderTemplate(this.Ctx, "views/admin/entry.amber", this.Data)
 }
 
 // Collection Operations

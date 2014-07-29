@@ -5,9 +5,10 @@ block content
 
 	table.entry-list
 		thead
-			th[width="50%"] Title
+			th[width="40%"] Title
 			th Date
 			th Author
+			th Status
 			th Edit
 			th Delete
 		tbody
@@ -16,6 +17,7 @@ block content
 					td #{$e.Title}
 					td #{$e.Date}
 					td #{$e.Author}
+					td #{$e.Status}
 					td
 						a[href="/admin/entries/" + $e.Id] Edit
 					td

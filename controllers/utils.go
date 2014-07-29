@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"bytes"
+	// "fmt"
 	"github.com/astaxie/beego/context"
 	"github.com/eknkc/amber"
 )
@@ -16,6 +17,7 @@ func renderTemplate(ctx *context.Context, tplName string, data map[interface{}]i
 	if err != nil {
 		panic(err)
 	}
+
 	var content bytes.Buffer
 	err = tpl.Execute(&content, data)
 	if err != nil {

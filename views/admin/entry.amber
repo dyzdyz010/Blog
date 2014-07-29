@@ -18,6 +18,15 @@ block content
 						[value=$c.Title]
 						[selected="selected"] ? $EntryCollection == $c.Title
 						| #{$c.Title}
+			select[name="status"][value=Entry.Status]
+				option
+					[value="draft"]
+					[selected="selected"] ? Entry.Status == "draft"
+					| Draft
+				option
+					[value="published"]
+					[selected="selected"] ? Entry.Status == "published"
+					| published
 			input.post-button[type="submit"][value="POST"]
 
 block scripts

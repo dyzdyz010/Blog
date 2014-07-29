@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	// "fmt"
+	"fmt"
 	"strconv"
 )
 
@@ -153,6 +153,7 @@ func zscan(name, key_start, score_start, score_end string, limit int) ([]string,
 	if status != "ok" {
 		return nil, errors.New(status)
 	}
+	fmt.Println(result)
 
 	return result[1:], nil
 }

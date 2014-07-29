@@ -16,15 +16,41 @@ func (this *FrontController) Prepare() {
 }
 
 func (this *FrontController) Home() {
+	// fmt.Println(this.GetString("prev") == "")
+	dir := ""
+	dirId := ""
+
+	// Configure direction
+	if this.GetString("prev") != "" {
+		dir = "prev"
+		dirId = this.GetString("prev")
+	}
+	if this.GetString("next") != "" {
+		dir = "next"
+		dirId = this.GetString("next")
+	}
+
 	// Main Nav
 	this.Data["HomeActive"] = "active"
 
 	// Data Source
-	this.Data["Entries"] = models.PublishedEntries()
+	entries, havePrev, haveNext, err := models.PublishedEntries(dir, dirId)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(len(entries))
+	this.Data["Entries"] = entries
+	if len(entries) != 0 {
+		this.Data["FirstId"] = entries[0].Id
+		this.Data["LastId"] = entries[len(entries)-1].Id
+	}
 
 	// Pagination
 	this.Data["PageNav"] = "true"
-	this.Data["LeftPage"] = "disabled"
+	fmt.Println("Have previous page: ", havePrev)
+	fmt.Println("Have next page: ", haveNext)
+	this.Data["HavePrev"] = havePrev
+	this.Data["HaveNext"] = haveNext
 
 	this.TplNames = "entry-list.tpl"
 
@@ -58,7 +84,7 @@ func (this *FrontController) Collection() {
 		panic(err)
 	}
 
-	entries, err := models.EntriesByCollection(cid)
+	entries, err := models.EntriesByCollection(cid, "", "")
 	if err != nil {
 		// panic(err)
 	}
@@ -67,6 +93,10 @@ func (this *FrontController) Collection() {
 	this.Data["Title"] = collection.Title
 	this.Data["Subtitle"] = collection.Subtitle
 	this.Data["Entries"] = entries
+
+	// Pagination
+	this.Data["PageNav"] = "true"
+	this.Data["LeftPage"] = "disabled"
 
 	renderTemplate(this.Ctx, "views/entry-list.amber", this.Data)
 }
@@ -78,7 +108,7 @@ func (this *FrontController) Entry() {
 
 	this.TplNames = "entry.tpl"
 
-	fmt.Println(entry.Content)
+	// fmt.Println(entry.Content)
 	this.Data["Entry"] = entry
 	this.Data["MarkdownEnabled"] = true
 

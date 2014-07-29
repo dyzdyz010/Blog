@@ -15,6 +15,8 @@ var h_entry = db_prefix + "entry"
 var h_collection = db_prefix + "collection"
 var h_author = db_prefix + "author"
 
+var page_size = 10
+
 func init() {
 	err := errors.New("")
 	db, err = ssdb.Connect("127.0.0.1", 8888)
