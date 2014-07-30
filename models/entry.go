@@ -32,7 +32,7 @@ func AllEntries() ([]Entry, error) {
 	}
 
 	eids := make([]string, 0)
-	for i := 0; i < len(result); i += 2 {
+	for i := len(result) - 2; i >= 0; i -= 2 {
 		eids = append(eids, result[i])
 	}
 	if len(eids) == 0 {
@@ -80,7 +80,7 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 
 	eids := make([]string, 0)
 	escores := make([]string, 0)
-	for i := 0; i < len(result); i += 2 {
+	for i := len(result) - 2; i >= 0; i -= 2 {
 		eids = append(eids, result[i])
 		escores = append(escores, result[i+1])
 	}
@@ -159,7 +159,7 @@ func EntriesByCollection(cid, dir, eid string) ([]Entry, bool, bool, error) {
 	}
 
 	eids := make([]string, 0)
-	for i := 0; i < len(result); i += 2 {
+	for i := len(result) - 2; i >= 0; i -= 2 {
 		eids = append(eids, result[i])
 	}
 	if len(eids) == 0 {
