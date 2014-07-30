@@ -150,7 +150,7 @@ func CollectionById(id string) (Collection, error) {
 		panic(err)
 		return Collection{}, err
 	}
-	fmt.Println(result)
+	// fmt.Println(result)
 	status := result[0]
 	if status != "ok" {
 		return Collection{}, errors.New(status)

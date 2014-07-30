@@ -3,7 +3,7 @@ package models
 import (
 	"encoding/json"
 	// "errors"
-	"fmt"
+	// "fmt"
 	"strconv"
 	"time"
 )
@@ -101,7 +101,7 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 
 	prev_border, _ := strconv.Atoi(escores[0])
 	result, err = zscan(zname("published", "entry"), "", "", string(prev_border-1), page_size)
-	fmt.Println(result)
+	// fmt.Println(result)
 	if err == nil {
 		if len(result) != 0 {
 			havePrev = true
@@ -161,6 +161,9 @@ func EntriesByCollection(cid, dir, eid string) ([]Entry, bool, bool, error) {
 	eids := make([]string, 0)
 	for i := 0; i < len(result); i += 2 {
 		eids = append(eids, result[i])
+	}
+	if len(eids) == 0 {
+		return nil, havePrev, haveNext, nil
 	}
 
 	result, err = multi_hget(h_entry, eids)
