@@ -1,9 +1,9 @@
 function markdown () {
-	console.log($(".entry-content").html());
+	// console.log($(".entry-content").html());
 	var markedStr = marked($(".entry-content").html());
 	var markedDom = $(markedStr);
 	$(".entry-content").html(markedDom);
-	console.log(markedDom);
+	// console.log(markedDom);
 }
 
 $(document).ready(function () {
