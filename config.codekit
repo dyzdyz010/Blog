@@ -85,6 +85,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/static\/js\/track.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/static\/js\/track.js",
+		"outputAbbreviatedPath": "\/static\/js\/min\/track-ck.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/static\/scss\/_icon-font.scss": {
 		"createSourceMap": 0,
 		"debugStyle": 0,
@@ -743,7 +754,7 @@
 	"sassUseLibsass": 0,
 	"shouldRunAutoprefixer": 0,
 	"shouldRunBless": 0,
-	"skippedItemsString": "_cache, logs, _logs, cache, .git, log, \/static\/bower_components, .svn, .hg",
+	"skippedItemsString": "\/models, \/views, _logs, .hg, _cache, log, \/static\/bower_components, \/static\/fonts, logs, \/controllers, cache, \/ssdb, .git, \/routers, .svn, \/conf, \/tests, \/static\/js, \/static\/css",
 	"slimAutoOutputPathRelativePath": "",
 	"slimAutoOutputPathReplace1": "",
 	"slimAutoOutputPathReplace2": "",
