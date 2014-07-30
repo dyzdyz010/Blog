@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/astaxie/beego"
 	"github.com/dyzdyz010/Blog/models"
 )
@@ -38,7 +38,7 @@ func (this *FrontController) Home() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(len(entries))
+	// fmt.Println(len(entries))
 	this.Data["Entries"] = entries
 	if len(entries) != 0 {
 		this.Data["FirstId"] = entries[0].Id
@@ -47,8 +47,6 @@ func (this *FrontController) Home() {
 
 	// Pagination
 	this.Data["PageNav"] = "true"
-	fmt.Println("Have previous page: ", havePrev)
-	fmt.Println("Have next page: ", haveNext)
 	this.Data["HavePrev"] = havePrev
 	this.Data["HaveNext"] = haveNext
 
@@ -78,15 +76,28 @@ func (this *FrontController) Collections() {
 }
 
 func (this *FrontController) Collection() {
+	dir := ""
+	dirId := ""
+
+	// Configure direction
+	if this.GetString("prev") != "" {
+		dir = "prev"
+		dirId = this.GetString("prev")
+	}
+	if this.GetString("next") != "" {
+		dir = "next"
+		dirId = this.GetString("next")
+	}
+
 	cid := this.Ctx.Input.Param(":id")
 	collection, err := models.CollectionById(cid)
 	if err != nil {
 		panic(err)
 	}
 
-	entries, err := models.EntriesByCollection(cid, "", "")
+	entries, havePrev, haveNext, err := models.EntriesByCollection(cid, dir, dirId)
 	if err != nil {
-		// panic(err)
+		panic(err)
 	}
 
 	this.TplNames = "entry-list.tpl"
@@ -96,7 +107,8 @@ func (this *FrontController) Collection() {
 
 	// Pagination
 	this.Data["PageNav"] = "true"
-	this.Data["LeftPage"] = "disabled"
+	this.Data["HavePrev"] = havePrev
+	this.Data["HaveNext"] = haveNext
 
 	renderTemplate(this.Ctx, "views/entry-list.amber", this.Data)
 }

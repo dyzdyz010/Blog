@@ -60,6 +60,7 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 	havePrev := false
 	haveNext := false
 
+	key_start := ""
 	score_start := ""
 	score_end := ""
 	if dir != "" {
@@ -69,12 +70,12 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 		}
 		if dir == "next" {
 			score_start = score
+			key_start = id
 		} else {
 			score_end = score
 		}
 	}
-
-	result, err := zscan(zname("published", "entry"), "", score_start, score_end, page_size)
+	result, err := zscan(zname("published", "entry"), key_start, score_start, score_end, page_size)
 
 	eids := make([]string, 0)
 	escores := make([]string, 0)
@@ -86,18 +87,22 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 		return nil, havePrev, haveNext, nil
 	}
 
-	result, err = zscan(zname("published", "entry"), "", escores[len(eids)-1], "", page_size)
-	fmt.Println(result)
+	result, err = zscan(zname("published", "entry"), eids[len(eids)-1], escores[len(escores)-1], "", page_size)
 	if err == nil {
-		haveNext = true
+		if len(result) != 0 {
+			haveNext = true
+		}
 	} else {
 		if err.Error() != "not_found" {
 			return nil, havePrev, haveNext, err
 		}
 	}
-	_, err = zscan(zname("published", "entry"), "", "", escores[0], page_size)
+	result, err = zscan(zname("published", "entry"), "", "", escores[0]+"\x00", page_size)
+	fmt.Println(result)
 	if err == nil {
-		havePrev = true
+		if len(result) != 0 {
+			havePrev = true
+		}
 	} else {
 		if err.Error() != "not_found" {
 			return nil, havePrev, haveNext, err
@@ -121,21 +126,33 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 	return entries, havePrev, haveNext, nil
 }
 
-func EntriesByCollection(cid, dir, eid string) ([]Entry, error) {
+func EntriesByCollection(cid, dir, eid string) ([]Entry, bool, bool, error) {
 	c, err := CollectionById(cid)
 	if err != nil {
 		panic(err)
 	}
 
-	size, err := zsize(zname(c.Title, "entry"))
-	if err != nil {
-		return nil, err
-	}
+	havePrev := false
+	haveNext := false
 
-	result, err := zscan(zname(c.Title, "entry"), "", "", "", size)
+	key_start := ""
+	score_start := ""
+	score_end := ""
+	if dir != "" {
+		score, err := zget(zname(c.Title, "entry"), eid)
+		if err != nil {
+			return nil, havePrev, haveNext, err
+		}
+		if dir == "next" {
+			score_start = score
+			key_start = eid
+		} else {
+			score_end = score
+		}
+	}
+	result, err := zscan(zname(c.Title, "entry"), key_start, score_start, score_end, page_size)
 	if err != nil {
-		panic(err)
-		return nil, err
+		return nil, havePrev, haveNext, err
 	}
 
 	eids := make([]string, 0)
@@ -145,7 +162,7 @@ func EntriesByCollection(cid, dir, eid string) ([]Entry, error) {
 
 	result, err = multi_hget(h_entry, eids)
 	if err != nil {
-		return nil, err
+		return nil, havePrev, haveNext, err
 	}
 
 	entries := []Entry{}
@@ -159,7 +176,7 @@ func EntriesByCollection(cid, dir, eid string) ([]Entry, error) {
 		}
 	}
 
-	return entries, nil
+	return entries, havePrev, haveNext, nil
 }
 
 func EntryById(id string) (*Entry, error) {
@@ -177,7 +194,7 @@ func EntryById(id string) (*Entry, error) {
 }
 
 func UpdateEntry(e Entry) error {
-	fmt.Println(e)
+	// fmt.Println(e)
 	t := time.Now()
 	e.Date = t.Format(time.RFC3339)
 
@@ -201,10 +218,17 @@ func UpdateEntry(e Entry) error {
 			return err
 		}
 	}
+	if oldEntry.Status != e.Status {
+		err = zdel(zname(oldEntry.Status, "entry"), e.Id)
+		if err != nil {
+			return err
+		}
+	}
 
-	if e.Collection != "none" {
+	if e.Collection != "none" && e.Status == "published" {
 		zset(zname(e.Collection, "entry"), e.Id, t.Unix())
 	}
+	zset(zname(e.Status, "entry"), e.Id, t.Unix())
 
 	return nil
 }
@@ -248,7 +272,7 @@ func DeleteEntry(id string) error {
 }
 
 func PostNewEntry(e Entry) (string, error) {
-	fmt.Println(e)
+	// fmt.Println(e)
 	e.Id = Hash(e.Title)
 	t := time.Now()
 	e.Date = t.Format(time.RFC3339)
@@ -282,9 +306,11 @@ func PostNewEntry(e Entry) (string, error) {
 	}
 
 	// Add entry to Collection Index
-	err = zset(zname(e.Collection, "entry"), e.Id, score)
-	if err != nil {
-		return "", err
+	if e.Status == "published" {
+		err = zset(zname(e.Collection, "entry"), e.Id, score)
+		if err != nil {
+			return "", err
+		}
 	}
 
 	return e.Id, nil
