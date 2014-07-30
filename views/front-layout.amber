@@ -40,9 +40,9 @@ html
 
 			footer#footer
 				div.social
-					a.icon-social-github[href="#"]
-					a.icon-social-dribbble[href="#"]
-					a.icon-social-linkedin[href="#"]
+					a.fi-social-github[href="#"]
+					a.fi-social-dribbble[href="#"]
+					a.fi-social-linkedin[href="#"]
 				div.links
 					p
 						span © 2014 
