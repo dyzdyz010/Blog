@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	// "errors"
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -81,7 +82,7 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 	escores := make([]string, 0)
 	for i := 0; i < len(result); i += 2 {
 		eids = append(eids, result[i])
-		escores = append(eids, result[i+1])
+		escores = append(escores, result[i+1])
 	}
 	if len(eids) == 0 {
 		return nil, havePrev, haveNext, nil
@@ -97,7 +98,9 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 			return nil, havePrev, haveNext, err
 		}
 	}
-	result, err = zscan(zname("published", "entry"), "", "", escores[0]+"\x00", page_size)
+
+	prev_border, _ := strconv.Atoi(escores[0])
+	result, err = zscan(zname("published", "entry"), "", "", string(prev_border-1), page_size)
 	fmt.Println(result)
 	if err == nil {
 		if len(result) != 0 {
