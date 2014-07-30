@@ -15,7 +15,7 @@ var h_entry = db_prefix + "entry"
 var h_collection = db_prefix + "collection"
 var h_author = db_prefix + "author"
 
-var page_size = 2
+var page_size = 10
 
 func init() {
 	err := errors.New("")
