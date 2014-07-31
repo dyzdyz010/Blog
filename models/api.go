@@ -157,3 +157,17 @@ func zscan(name, key_start, score_start, score_end string, limit int) ([]string,
 
 	return result[1:], nil
 }
+
+func zrscan(name, key_start, score_start, score_end string, limit int) ([]string, error) {
+	result, err := db.Do("zrscan", name, key_start, score_start, score_end, limit)
+	if err != nil {
+		return nil, err
+	}
+	status := result[0]
+	if status != "ok" {
+		return nil, errors.New(status)
+	}
+	// fmt.Println(result)
+
+	return result[1:], nil
+}

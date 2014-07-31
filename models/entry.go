@@ -2,8 +2,7 @@ package models
 
 import (
 	"encoding/json"
-	// "errors"
-	// "fmt"
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -76,19 +75,23 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 			score_end = score
 		}
 	}
-	result, err := zscan(zname("published", "entry"), key_start, score_start, score_end, page_size)
+	result, err := zrscan(zname("published", "entry"), key_start, score_start, score_end, page_size)
+	// fmt.Println(result)
 
 	eids := make([]string, 0)
 	escores := make([]string, 0)
-	for i := len(result) - 2; i >= 0; i -= 2 {
+	for i := 0; i < len(result); i += 2 {
 		eids = append(eids, result[i])
 		escores = append(escores, result[i+1])
 	}
 	if len(eids) == 0 {
 		return nil, havePrev, haveNext, nil
 	}
+	// fmt.Println(eids, escores)
 
-	result, err = zscan(zname("published", "entry"), eids[len(eids)-1], escores[len(escores)-1], "", page_size)
+	// Check prev and next page existance
+	result, err = zrscan(zname("published", "entry"), eids[len(eids)-1], escores[len(escores)-1], "", page_size)
+	// fmt.Println(result)
 	if err == nil {
 		if len(result) != 0 {
 			haveNext = true
@@ -100,8 +103,9 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 	}
 
 	prev_border, _ := strconv.Atoi(escores[0])
-	result, err = zscan(zname("published", "entry"), "", "", string(prev_border-1), page_size)
-	// fmt.Println(result)
+
+	result, err = zrscan(zname("published", "entry"), "", "", strconv.FormatInt(int64(prev_border+1), 10), page_size)
+	fmt.Println(result)
 	if err == nil {
 		if len(result) != 0 {
 			havePrev = true
@@ -153,17 +157,49 @@ func EntriesByCollection(cid, dir, eid string) ([]Entry, bool, bool, error) {
 			score_end = score
 		}
 	}
-	result, err := zscan(zname(c.Title, "entry"), key_start, score_start, score_end, page_size)
+	result, err := zrscan(zname(c.Title, "entry"), key_start, score_start, score_end, page_size)
+	fmt.Println(key_start, score_start, score_end)
 	if err != nil {
 		return nil, havePrev, haveNext, err
 	}
 
 	eids := make([]string, 0)
-	for i := len(result) - 2; i >= 0; i -= 2 {
+	escores := make([]string, 0)
+	for i := 0; i < len(result); i += 2 {
 		eids = append(eids, result[i])
+		escores = append(escores, result[i+1])
 	}
 	if len(eids) == 0 {
 		return nil, havePrev, haveNext, nil
+	}
+
+	fmt.Println(eids)
+
+	// Check prev and next page existance
+	result, err = zrscan(zname(c.Title, "entry"), eids[len(eids)-1], escores[len(escores)-1], "", page_size)
+	// fmt.Println(result)
+	if err == nil {
+		if len(result) != 0 {
+			haveNext = true
+		}
+	} else {
+		if err.Error() != "not_found" {
+			return nil, havePrev, haveNext, err
+		}
+	}
+
+	prev_border, _ := strconv.Atoi(escores[0])
+
+	result, err = zrscan(zname(c.Title, "entry"), "", "", strconv.FormatInt(int64(prev_border+1), 10), page_size)
+	// fmt.Println(result)
+	if err == nil {
+		if len(result) != 0 {
+			havePrev = true
+		}
+	} else {
+		if err.Error() != "not_found" {
+			return nil, havePrev, haveNext, err
+		}
 	}
 
 	result, err = multi_hget(h_entry, eids)
@@ -172,7 +208,7 @@ func EntriesByCollection(cid, dir, eid string) ([]Entry, bool, bool, error) {
 	}
 
 	entries := []Entry{}
-	for i := len(result) - 1; i > 0; i -= 2 {
+	for i := 1; i < len(result); i += 2 {
 		e := Entry{}
 		_ = json.Unmarshal([]byte(result[i]), &e)
 		t, _ := time.Parse(time.RFC3339, e.Date)

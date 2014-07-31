@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	// "fmt"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/dyzdyz010/Blog/models"
 )
@@ -40,6 +40,7 @@ func (this *FrontController) Home() {
 	}
 	// fmt.Println(len(entries))
 	this.Data["Entries"] = entries
+	this.Data["Pos"] = ""
 	if len(entries) != 0 {
 		this.Data["FirstId"] = entries[0].Id
 		this.Data["LastId"] = entries[len(entries)-1].Id
@@ -104,6 +105,12 @@ func (this *FrontController) Collection() {
 	this.Data["Title"] = collection.Title
 	this.Data["Subtitle"] = collection.Subtitle
 	this.Data["Entries"] = entries
+	this.Data["Pos"] = this.UrlFor("FrontController.Collection", ":id", cid)
+
+	if len(entries) != 0 {
+		this.Data["FirstId"] = entries[0].Id
+		this.Data["LastId"] = entries[len(entries)-1].Id
+	}
 
 	// Pagination
 	this.Data["PageNav"] = "true"

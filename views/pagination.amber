@@ -4,12 +4,12 @@ div.pagination
 			li
 				a
 					[class="disabled"] ? !HavePrev
-					[href="/?prev=" + FirstId]
+					[href=Pos + "/?prev=" + FirstId]
 					i.fi-arrow-left
 					| Newer
 			li
 				a
 					[class="disabled"] ? !HaveNext
-					[href="/?next=" + LastId]
+					[href=Pos + "/?next=" + LastId]
 					| Older
 					i.fi-arrow-right
