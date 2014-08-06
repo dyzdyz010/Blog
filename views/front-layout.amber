@@ -40,9 +40,9 @@ html
 
 			footer#footer
 				div.social
-					a.fi-social-github[href="https://github.com/dyzdyz010"]
-					a.fi-social-dribbble[href="https://dribbble.com/dyzdyz010"]
-					a.fi-social-linkedin[href="https://www.linkedin.com/pub/yizhuo-du/79/938/42b"]
+					a.fi-social-github[target="__blank"][href="https://github.com/dyzdyz010"]
+					a.fi-social-dribbble[target="__blank"][href="https://dribbble.com/dyzdyz010"]
+					a.fi-social-linkedin[target="__blank"][href="https://www.linkedin.com/pub/yizhuo-du/79/938/42b"]
 				div.links
 					p
 						span © 2014 
