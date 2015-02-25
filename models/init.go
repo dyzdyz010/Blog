@@ -29,9 +29,27 @@ func init() {
 	fmt.Println(Appconf.Int("database::port"))
 	host := Appconf.String("database::host")
 	port, _ := Appconf.Int("database::port")
+	fmt.Println(Appconf.DIY("blog::author"))
 
 	db, err = ssdb.Connect(host, port)
 	if err != nil {
 		panic(err)
+	}
+
+	authorsRaw, err := Appconf.DIY("blog::author")
+	if err != nil {
+		panic(err)
+	}
+	authors := authorsRaw.([]interface{})
+	for _, a := range authors {
+		atemp, ok := a.(map[string]interface{})
+		if !ok {
+			panic(ok)
+		}
+
+		author := &Author{}
+		author.Name = atemp["name"].(string)
+		author.Password = atemp["password"].(string)
+		AddAuthor(author.Name, author.Password)
 	}
 }

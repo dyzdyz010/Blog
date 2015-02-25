@@ -5,6 +5,17 @@
 	},
 	"blog": {
 		"title": "Moonlightter",
-		"subtitle": "My Programming Life"
+		"subtitle": "My Programming Life",
+
+		"author": [
+			{
+				"name": "Du Yizhuo",
+				"password": "duyizhuo"
+			},
+			{
+				"name": "Wu Tianxing",
+				"password": "wutianxing"
+			}
+		]
 	}
 }

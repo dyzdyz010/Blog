@@ -54,6 +54,7 @@ func multi_hget(name string, keys []string) ([]string, error) {
 func hset(name, key, value string) error {
 	result, err := db.Do("hset", name, key, value)
 	if err != nil {
+		panic(err)
 		return err
 	}
 	status := result[0]

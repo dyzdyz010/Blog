@@ -3,7 +3,7 @@ package models
 import (
 	"encoding/json"
 	"errors"
-	// "fmt"
+	"fmt"
 )
 
 type Author struct {
@@ -23,6 +23,24 @@ func AuthorByName(name string) (*Author, error) {
 	// fmt.Println(result)
 	author := &Author{}
 	err = json.Unmarshal([]byte(result[1]), author)
+	if err != nil {
+		return nil, err
+	}
+
+	return author, nil
+}
+
+func AddAuthor(name, password string) (*Author, error) {
+	author := &Author{}
+	author.Name = name
+	author.Password = Hash(password)
+	abytes, err := json.Marshal(author)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Println(string(abytes))
+	err = hset(h_author, author.Name, string(abytes))
 	if err != nil {
 		return nil, err
 	}
