@@ -1,0 +1,10 @@
+{
+	"database": {
+		"host": "192.168.59.103",
+		"port": 8888
+	},
+	"blog": {
+		"title": "Moonlightter",
+		"subtitle": "My Programming Life"
+	}
+}

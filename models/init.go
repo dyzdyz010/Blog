@@ -1,13 +1,14 @@
 package models
 
 import (
-	// "fmt"
-	// "github.com/astaxie/beego/config"
 	"errors"
+	"fmt"
+	"github.com/astaxie/beego/config"
 	"github.com/dyzdyz010/Blog/ssdb"
 )
 
 var db *ssdb.Client
+var Appconf config.ConfigContainer
 
 // Hash Map Names
 var db_prefix = "blog_"
@@ -19,7 +20,17 @@ var page_size = 10
 
 func init() {
 	err := errors.New("")
-	db, err = ssdb.Connect("127.0.0.1", 8888)
+
+	Appconf, err = config.NewConfig("json", "conf/blog.json")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(Appconf.Int("database::port"))
+	host := Appconf.String("database::host")
+	port, _ := Appconf.Int("database::port")
+
+	db, err = ssdb.Connect(host, port)
 	if err != nil {
 		panic(err)
 	}
