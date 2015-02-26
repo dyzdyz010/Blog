@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	// "fmt"
+	"fmt"
 	"strconv"
 )
 
@@ -45,6 +45,7 @@ func multi_hget(name string, keys []string) ([]string, error) {
 	}
 	status := result[0]
 	if status != "ok" {
+		fmt.Println(result)
 		return nil, errors.New(status)
 	}
 

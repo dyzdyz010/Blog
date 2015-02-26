@@ -70,7 +70,8 @@ func (this *AdminController) Entries() {
 	checkLogin(this)
 	this.TplNames = "admin/entry-list.tpl"
 
-	entries, err := models.AllEntries()
+	// fmt.Println(this.GetSession("user").(string))
+	entries, err := models.EntriesByUser(this.GetSession("user").(string))
 	if err != nil {
 		panic(err)
 	}
@@ -186,7 +187,7 @@ func (this *AdminController) PostNewEntry() {
 	}
 	entry.Author = this.GetSession("user").(string)
 	entry.Collection = this.Input().Get("collection")
-	nid, err := models.PostNewEntry(entry)
+	nid, err := models.AddEntry(entry)
 	this.TplNames = "admin/entry.tpl"
 	this.Data["Title"] = "Moonlightter"
 	this.Data["Subtitle"] = "My Programming Life"

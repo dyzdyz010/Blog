@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/astaxie/beego"
 	"github.com/dyzdyz010/Blog/models"
 )
@@ -11,7 +11,7 @@ type FrontController struct {
 }
 
 func (this *FrontController) Prepare() {
-	fmt.Println("Prepare")
+	// fmt.Println("Prepare")
 	this.Data["Title"] = models.Appconf.String("blog::title")
 	this.Data["Subtitle"] = models.Appconf.String("blog::subtitle")
 }

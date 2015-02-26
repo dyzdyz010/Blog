@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	// "errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -53,6 +54,47 @@ func AllEntries() ([]Entry, error) {
 		entries = append(entries, entry)
 	}
 
+	return entries, nil
+}
+
+func EntriesByUser(name string) ([]Entry, error) {
+	zsetName := zname(name, "entry")
+	// fmt.Println(zsetName)
+
+	size, err := zsize(zsetName)
+	// fmt.Println(size)
+	if err != nil {
+		return []Entry{}, err
+	}
+	if size == 0 {
+		return []Entry{}, nil
+	}
+
+	result, err := zscan(zsetName, "", "", "", size)
+	if err != nil {
+		return []Entry{}, err
+	}
+	// fmt.Println(result)
+	cids := make([]string, 0)
+	for i := 0; i < len(result); i += 2 {
+		cids = append(cids, result[i])
+	}
+	// fmt.Println(cids)
+	result, err = multi_hget(h_entry, cids)
+	if err != nil {
+		return []Entry{}, err
+	}
+	// fmt.Println(result)
+
+	entries := []Entry{}
+	for i := len(result) - 1; i > 0; i -= 2 {
+		c := Entry{}
+		_ = json.Unmarshal([]byte(result[i]), &c)
+		t, _ := time.Parse(time.RFC3339, c.Date)
+		c.Date = t.Format(time.ANSIC)
+		entries = append(entries, c)
+	}
+	fmt.Println(entries)
 	return entries, nil
 }
 
@@ -313,7 +355,7 @@ func DeleteEntry(id string) error {
 	return nil
 }
 
-func PostNewEntry(e Entry) (string, error) {
+func AddEntry(e Entry) (string, error) {
 	// fmt.Println(e)
 	e.Id = Hash(e.Title)
 	t := time.Now()
