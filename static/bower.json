@@ -1,8 +1,9 @@
 {
-  "name": "foundation-compass-app",
+  "name": "Blog",
   "version": "0.0.1",
   "private": "true",
   "dependencies": {
-    "foundation": "zurb/bower-foundation"
+    "foundation": "zurb/bower-foundation",
+    "autosize": "jackmoore/autosize"
   }
 }

@@ -11,6 +11,8 @@ $(document).ready(function () {
 	markdown();
 
 	$(".entry-content-edit").keyup(markdown);
+
+	autosize($('textarea'));
 });
 
 function markdown () {

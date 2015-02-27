@@ -99,7 +99,6 @@
 			margin-top: 70px;
 
 			.entry-title {
-				text-align: center;
 				color: #121212;
 				text-transform: uppercase;
 				font-size: rem-calc(35);
@@ -114,7 +113,6 @@
 			}
 
 			.entry-subtitle {
-				text-align: center;
 				color: #777;
 				font-weight: 300;
 				font-size: rem-calc(27);
@@ -143,6 +141,22 @@
 					max-width: 100%;
 					padding-top: 20px;
 					padding-bottom: 20px;
+				}
+
+				a {
+					color: #777;
+					text-decoration: underline;
+					&:hover {
+						@include hover;
+					}
+				}
+
+				ul li {
+					list-style: disc;
+				}
+
+				ol li {
+					list-style: decimal;
 				}
 			}
 
@@ -333,7 +347,10 @@
 				font-size: rem-calc(18);
 				font-family: "Open Sans";
 				resize: none;
+				border: solid 1px #E6E6E6;
+				padding: 10px;
 			}
+
 			.entry-content {
 				display: block;
 				margin-top: 30px;
@@ -353,6 +370,11 @@
 				p {
 
 				}
+			}
+
+			.entry-properties {
+				padding-top: 20px;
+				border-top: solid 1px #E6E6E6;
 			}
 
 			select {

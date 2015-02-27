@@ -8,28 +8,31 @@ block content
 			div.entry-content
 
 			$EntryCollection = Entry.Collection
-			select[name="collection"][value=$EntryCollection]
-				option
-					[value="none"]
-					[selected="selected"] ? $EntryCollection == "none"
-					| None
-				each $i, $c in Collections
+
+			div.entry-properties
+				select[name="collection"][value=$EntryCollection]
 					option
-						[value=$c.Title]
-						[selected="selected"] ? $EntryCollection == $c.Title
-						| #{$c.Title}
-			select[name="status"][value=Entry.Status]
-				option
-					[value="draft"]
-					[selected="selected"] ? Entry.Status == "draft"
-					| Draft
-				option
-					[value="published"]
-					[selected="selected"] ? Entry.Status == "published"
-					| published
+						[value="none"]
+						[selected="selected"] ? $EntryCollection == "none"
+						| None
+					each $i, $c in Collections
+						option
+							[value=$c.Title]
+							[selected="selected"] ? $EntryCollection == $c.Title
+							| #{$c.Title}
+				select[name="status"][value=Entry.Status]
+					option
+						[value="draft"]
+						[selected="selected"] ? Entry.Status == "draft"
+						| Draft
+					option
+						[value="published"]
+						[selected="selected"] ? Entry.Status == "published"
+						| published
 			input.post-button[type="submit"][value="POST"]
 
 block scripts
 	script[type="text/javascript"][src="//cdn.staticfile.org/marked/0.3.2/marked.min.js"]
 	script[type="text/javascript"][src="/static/js/highlight.pack.js"]
-	script[type="text/javascript"][src="/static/js/admin/markdown-admin.js"]
+	script[type="text/javascript"][src="/static/bower_components/autosize/dest/autosize.min.js"]
+	script[type="text/javascript"][src="/static/js/admin/entry-edit.js"]
