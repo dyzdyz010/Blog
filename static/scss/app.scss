@@ -99,6 +99,7 @@
 			margin-top: 70px;
 
 			.entry-title {
+				text-align: center;
 				color: #121212;
 				text-transform: uppercase;
 				font-size: rem-calc(35);
@@ -113,6 +114,7 @@
 			}
 
 			.entry-subtitle {
+				text-align: center;
 				color: #777;
 				font-weight: 300;
 				font-size: rem-calc(27);
@@ -133,10 +135,19 @@
 						color: #777;
 					}
 				}
+
+				img {
+					position: relative;
+					display: block;
+					margin: 0 auto;
+					max-width: 100%;
+					padding-top: 20px;
+					padding-bottom: 20px;
+				}
 			}
 
 			.entry-meta {
-				margin-top: 30px;
+				margin-top: 20px;
 				padding-top: 10px;
 				border-top: solid 1px #E6E6E6;
 				text-align: center;
@@ -389,7 +400,7 @@
 	}
 
 	#footer {
-		margin-top: 100px;
+		margin-top: 30px;
 		text-align: center;
 
 		.social {
