@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/dyzdyz010/Blog/models"
+	"github.com/qiniu/api/rs"
 )
 
 type AdminController struct {
@@ -327,4 +328,15 @@ func (this *AdminController) CreateCollection() {
 	this.Data["CollectionActive"] = true
 
 	renderTemplate(this.Ctx, "views/admin/collection.amber", this.Data)
+}
+
+func (this *AdminController) QiniuTokens() {
+	bucket := models.Appconf.String("qiniu::bucket")
+	putPolicy := rs.PutPolicy{
+		Scope:     bucket,
+		MimeLimit: "image/*",
+	}
+
+	this.Data["json"] = putPolicy.Token(nil)
+	this.ServeJson()
 }

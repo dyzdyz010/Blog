@@ -13,7 +13,10 @@ $(document).ready(function () {
 	$(".entry-content-edit").keyup(markdown);
 
 	// Autosize
-	autosize($('textarea'));
+	autosize($('.entry-content-edit'));
+
+	// Image upload
+	imgUploadInit();
 });
 
 function markdown () {

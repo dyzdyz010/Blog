@@ -3,6 +3,11 @@
 		"host": "192.168.59.103",
 		"port": 8888
 	},
+	"qiniu": {
+		"ak": "D-XLrC_vEgnuan62SE6DEMCjy927S3xLSfXmOHNy",
+		"sk": "0g_1eP-Z8IxBs0_2DSB_AVG1UcTPCSUtgcMFldvC",
+		"bucket": "blog"
+	},
 	"blog": {
 		"title": "Moonlightter",
 		"subtitle": "My Programming Life",
