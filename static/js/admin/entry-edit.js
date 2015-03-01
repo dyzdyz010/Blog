@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	// Markdown
 	marked.setOptions({
 		highlight: function (code, lang) {
 			if (lang && hljs.getLanguage(lang)) {
@@ -9,9 +10,9 @@ $(document).ready(function () {
 		}
 	});
 	markdown();
-
 	$(".entry-content-edit").keyup(markdown);
 
+	// Autosize
 	autosize($('textarea'));
 });
 
@@ -20,5 +21,5 @@ function markdown () {
 	var markedStr = marked($(".entry-content-edit").val());
 	var markedDom = $(markedStr);
 	$(".entry-content").html(markedDom);
-	console.log(markedDom)
+	// console.log(markedDom)
 }

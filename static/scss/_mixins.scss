@@ -33,7 +33,7 @@
 				color: #CFCFCF;
 
 				&.active {
-					color: #34AD9B;
+					@include hover;
 				}
 
 				&:hover {
