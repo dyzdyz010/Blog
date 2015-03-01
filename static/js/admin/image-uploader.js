@@ -66,8 +66,7 @@ function sendFileToServer (fd, token) {
 			var imgBaseURL = 'http://7vztwe.com1.z0.glb.clouddn.com/'
 			console.log(data);
 			var imgURL = imgBaseURL + data.key;
-			var content = editArea.val() + '\r\n\r\n![img](' + imgURL + ')\r\n\r\n';
-			editArea.val(content);
+			insertImgURL(imgURL);
 
 			var ta = document.querySelector('textarea');
 			var evt = document.createEvent('Event');
@@ -77,4 +76,13 @@ function sendFileToServer (fd, token) {
 			markdown();
 		}
 	})
+}
+
+function insertImgURL (url) {
+	var cursorPos = editArea.prop('selectionStart');
+	var content = editArea.val();
+	var textBefore = content.substring(0, cursorPos);
+	var textAfter = content.substring(cursorPos, content.length);
+	content = textBefore + '\r\n\r\n![](' + url + ')\r\n\r\n' + textAfter;
+	editArea.val(content);
 }
