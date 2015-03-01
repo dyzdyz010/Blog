@@ -333,8 +333,7 @@ func (this *AdminController) CreateCollection() {
 func (this *AdminController) QiniuTokens() {
 	bucket := models.Appconf.String("qiniu::bucket")
 	putPolicy := rs.PutPolicy{
-		Scope:     bucket,
-		MimeLimit: "image/*",
+		Scope: bucket,
 	}
 
 	this.Data["json"] = putPolicy.Token(nil)
