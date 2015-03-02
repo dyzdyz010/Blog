@@ -11,8 +11,8 @@ html
 	body
 		div#site
 			header
-				h1.blog-title #{Title}
-				p.blog-subtitle #{Subtitle}
+				h1.blog-title #{BlogTitle}
+				p.blog-subtitle #{BlogSubtitle}
 
 				nav.main-nav
 					ul
