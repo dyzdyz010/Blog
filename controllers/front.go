@@ -12,9 +12,9 @@ type FrontController struct {
 
 func (this *FrontController) Prepare() {
 	// fmt.Println("Prepare")
+	this.Data["PageTitle"] = models.Appconf.String("blog::title")
 	this.Data["Title"] = models.Appconf.String("blog::title")
-	this.Data["BlogTitle"] = models.Appconf.String("blog::title")
-	this.Data["BlogSubtitle"] = models.Appconf.String("blog::subtitle")
+	this.Data["Subtitle"] = models.Appconf.String("blog::subtitle")
 }
 
 func (this *FrontController) Home() {

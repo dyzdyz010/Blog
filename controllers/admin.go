@@ -11,6 +11,12 @@ type AdminController struct {
 	beego.Controller
 }
 
+func (this *AdminController) Prepare() {
+	this.Data["PageTitle"] = models.Appconf.String("blog::title")
+	this.Data["Title"] = models.Appconf.String("blog::title")
+	this.Data["Subtitle"] = models.Appconf.String("blog::subtitle")
+}
+
 func checkLogin(ac *AdminController) {
 	name := ac.GetSession("user")
 	if name == nil {
@@ -23,8 +29,6 @@ func (this *AdminController) Dashboard() {
 
 	this.TplNames = "admin/dashboard.tpl"
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["DashboardActive"] = true
 
 	renderTemplate(this.Ctx, "views/admin/dashboard.amber", this.Data)
@@ -34,9 +38,6 @@ func (this *AdminController) Dashboard() {
 
 func (this *AdminController) Login() {
 	this.TplNames = "admin/login.tpl"
-
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 
 	renderTemplate(this.Ctx, "views/admin/login.amber", this.Data)
 }
@@ -59,8 +60,6 @@ func (this *AdminController) PostLogin() {
 		this.SetSession("user", author.Name)
 		this.Redirect("/admin", 302)
 	}
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 
 	renderTemplate(this.Ctx, "views/admin/login.amber", this.Data)
 }
@@ -77,8 +76,6 @@ func (this *AdminController) Entries() {
 		panic(err)
 	}
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["EntryActive"] = true
 	this.Data["Entries"] = entries
 
@@ -102,8 +99,6 @@ func (this *AdminController) Entry() {
 		}
 	}
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["EntryActive"] = true
 	this.Data["MarkdownEnabled"] = true
 
@@ -133,8 +128,6 @@ func (this *AdminController) UpdateEntry() {
 	}
 
 	this.TplNames = "admin/entry.tpl"
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["EntryActive"] = true
 	this.Data["PostId"] = "update/" + entry.Id
 	this.Data["Entry"] = entry
@@ -166,8 +159,6 @@ func (this *AdminController) NewEntry() {
 	checkLogin(this)
 	this.TplNames = "admin/entry.tpl"
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["PostId"] = "new"
 	this.Data["EntryActive"] = true
 	this.Data["MarkdownEnabled"] = true
@@ -181,6 +172,8 @@ func (this *AdminController) NewEntry() {
 }
 
 func (this *AdminController) PostNewEntry() {
+	this.TplNames = "admin/entry.tpl"
+
 	entry := models.Entry{}
 	err := this.ParseForm(&entry)
 	if err != nil {
@@ -189,10 +182,6 @@ func (this *AdminController) PostNewEntry() {
 	entry.Author = this.GetSession("user").(string)
 	entry.Collection = this.Input().Get("collection")
 	nid, err := models.AddEntry(entry)
-	this.TplNames = "admin/entry.tpl"
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
-	this.Data["EntryActive"] = true
 	if err != nil {
 		this.Data["PostId"] = "new"
 		this.Data["Message"] = err.Error()
@@ -208,6 +197,7 @@ func (this *AdminController) PostNewEntry() {
 	}
 	this.Data["Entry"] = entry
 	this.Data["MarkdownEnabled"] = true
+	this.Data["EntryActive"] = true
 
 	renderTemplate(this.Ctx, "views/admin/entry.amber", this.Data)
 }
@@ -223,8 +213,6 @@ func (this *AdminController) Collections() {
 		panic(err)
 	}
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["CollectionActive"] = true
 	this.Data["Collections"] = collections
 
@@ -242,8 +230,6 @@ func (this *AdminController) Collection() {
 		panic(err)
 	}
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["CollectionActive"] = true
 	this.Data["Collection"] = collection
 	this.Data["PostId"] = "update/" + id
@@ -270,8 +256,6 @@ func (this *AdminController) UpdateCollection() {
 		this.Data["PostId"] = "update/" + nid
 		this.Data["Message"] = "Update Successful"
 	}
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["Collection"] = collection
 	this.Data["CollectionActive"] = true
 
@@ -283,8 +267,6 @@ func (this *AdminController) NewCollection() {
 	checkLogin(this)
 	this.TplNames = "admin/collection.tpl"
 
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["CollectionActive"] = true
 	this.Data["PostId"] = "new"
 
@@ -322,8 +304,6 @@ func (this *AdminController) CreateCollection() {
 		this.Data["PostId"] = "update/" + cid
 		this.Data["Message"] = "Post Successful"
 	}
-	this.Data["Title"] = "Moonlightter"
-	this.Data["Subtitle"] = "My Programming Life"
 	this.Data["Collection"] = collection
 	this.Data["CollectionActive"] = true
 

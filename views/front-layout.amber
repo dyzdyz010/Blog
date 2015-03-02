@@ -1,7 +1,7 @@
 doctype 5
 html
 	head
-		title #{Title}
+		title #{PageTitle}
 		meta[name="viewport"][content="width=device-width, initial-scale=1.0"]
 		link[rel="stylesheet"][type="text/css"][href="http://fonts.googleapis.com/css?family=Cabin|Open+Sans:400italic,400,600,300"]
 		link[rel="stylesheet"][type="text/css"][href="/static/css/app.css"]
@@ -11,8 +11,8 @@ html
 	body
 		div#site
 			header
-				h1.blog-title #{BlogTitle}
-				p.blog-subtitle #{BlogSubtitle}
+				h1.blog-title #{Title}
+				p.blog-subtitle #{Subtitle}
 
 				nav.main-nav
 					ul
