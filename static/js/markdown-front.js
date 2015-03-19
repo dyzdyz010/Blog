@@ -1,6 +1,6 @@
 function markdown () {
 	// console.log($(".entry-content").html());
-	var markedStr = marked($(".entry-content").html());
+	var markedStr = marked($(".entry-content").text());
 	var markedDom = $(markedStr);
 	$(".entry-content").html(markedDom);
 	// console.log(markedDom);
