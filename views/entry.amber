@@ -26,5 +26,6 @@ block content
 
 block scripts
 	script[type="text/javascript"][src="//cdn.staticfile.org/marked/0.3.2/marked.min.js"]
+	script[type="text/javascript"][src="/static/bower_components/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"]
 	script[type="text/javascript"][src="/static/js/highlight.pack.js"]
 	script[type="text/javascript"][src="/static/js/markdown-front.js"]

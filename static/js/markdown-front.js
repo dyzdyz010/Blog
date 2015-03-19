@@ -4,6 +4,7 @@ function markdown () {
 	var markedDom = $(markedStr);
 	$(".entry-content").html(markedDom);
 	// console.log(markedDom);
+	MathJax.Hub.Typeset();
 }
 
 $(document).ready(function () {
@@ -16,5 +17,9 @@ $(document).ready(function () {
 			}
 		}
 	});
+
+	// MathJax config
+	MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$']]}});
+
 	markdown();
 });

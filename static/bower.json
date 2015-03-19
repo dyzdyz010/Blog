@@ -4,6 +4,7 @@
   "private": "true",
   "dependencies": {
     "foundation": "zurb/bower-foundation",
-    "autosize": "jackmoore/autosize"
+    "autosize": "jackmoore/autosize",
+    "MathJax": "mathjax/MathJax"
   }
 }

@@ -17,6 +17,9 @@ $(document).ready(function () {
 
 	// Image upload
 	imgUploadInit();
+
+	// MathJax
+	MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$']]}});
 });
 
 function markdown () {
@@ -25,4 +28,5 @@ function markdown () {
 	var markedDom = $(markedStr);
 	$(".entry-content").html(markedDom);
 	// console.log(markedDom)
+	MathJax.Hub.Typeset();
 }
