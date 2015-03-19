@@ -1,9 +1,6 @@
 extends front-layout
 block content
 	div.row.entry
-		h2.entry-title #{Entry.Title}
-		h3.entry-subtitle #{Entry.Subtitle}
-
 		div.entry-content #{Entry.Content}
 
 		div.entry-meta

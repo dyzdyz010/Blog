@@ -3,7 +3,7 @@ package models
 import (
 	"encoding/json"
 	// "errors"
-	"fmt"
+	// "fmt"
 	"strconv"
 	"time"
 )
@@ -94,7 +94,7 @@ func EntriesByUser(name string) ([]Entry, error) {
 		c.Date = t.Format(time.ANSIC)
 		entries = append(entries, c)
 	}
-	fmt.Println(entries)
+	// fmt.Println(entries)
 	return entries, nil
 }
 
@@ -147,7 +147,7 @@ func PublishedEntries(dir, id string) ([]Entry, bool, bool, error) {
 	prev_border, _ := strconv.Atoi(escores[0])
 
 	result, err = zrscan(zname("published", "entry"), "", "", strconv.FormatInt(int64(prev_border+1), 10), page_size)
-	fmt.Println(result)
+	// fmt.Println(result)
 	if err == nil {
 		if len(result) != 0 {
 			havePrev = true
@@ -200,7 +200,7 @@ func EntriesByCollection(cid, dir, eid string) ([]Entry, bool, bool, error) {
 		}
 	}
 	result, err := zrscan(zname(c.Title, "entry"), key_start, score_start, score_end, page_size)
-	fmt.Println(key_start, score_start, score_end)
+	// fmt.Println(key_start, score_start, score_end)
 	if err != nil {
 		return nil, havePrev, haveNext, err
 	}
@@ -215,7 +215,7 @@ func EntriesByCollection(cid, dir, eid string) ([]Entry, bool, bool, error) {
 		return nil, havePrev, haveNext, nil
 	}
 
-	fmt.Println(eids)
+	// fmt.Println(eids)
 
 	// Check prev and next page existance
 	result, err = zrscan(zname(c.Title, "entry"), eids[len(eids)-1], escores[len(escores)-1], "", page_size)

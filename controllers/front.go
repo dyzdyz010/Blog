@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	// "fmt"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/dyzdyz010/Blog/models"
 )
@@ -11,7 +11,7 @@ type FrontController struct {
 }
 
 func (this *FrontController) Prepare() {
-	// fmt.Println("Prepare")
+	fmt.Println(models.Appconf.String("blog::title"))
 	this.Data["PageTitle"] = models.Appconf.String("blog::title")
 	this.Data["Title"] = models.Appconf.String("blog::title")
 	this.Data["Subtitle"] = models.Appconf.String("blog::subtitle")
@@ -132,6 +132,7 @@ func (this *FrontController) Entry() {
 	// fmt.Println(entry.Content)
 	this.Data["Entry"] = entry
 	this.Data["Title"] = entry.Title
+	this.Data["Subtitle"] = entry.Subtitle
 	this.Data["MarkdownEnabled"] = true
 
 	renderTemplate(this.Ctx, "views/entry.amber", this.Data)

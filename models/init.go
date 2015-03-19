@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	"fmt"
+	// "fmt"
 	"github.com/astaxie/beego/config"
 	"github.com/dyzdyz010/Blog/ssdb"
 )
@@ -26,10 +26,10 @@ func init() {
 		panic(err)
 	}
 
-	fmt.Println(Appconf.Int("database::port"))
+	// fmt.Println(Appconf.Int("database::port"))
 	host := Appconf.String("database::host")
 	port, _ := Appconf.Int("database::port")
-	fmt.Println(Appconf.DIY("blog::author"))
+	// fmt.Println(Appconf.DIY("blog::author"))
 
 	db, err = ssdb.Connect(host, port)
 	if err != nil {
