@@ -158,6 +158,16 @@
 				ol li {
 					list-style: decimal;
 				}
+
+				sup {
+					font-size: smaller;
+					vertical-align: super;
+				}
+
+				sub {
+					font-size: smaller;
+					vertical-align: bottom;
+				}
 			}
 
 			.entry-meta {
@@ -369,6 +379,16 @@
 
 				p {
 
+				}
+
+				sup {
+					font-size: smaller;
+					vertical-align: super;
+				}
+
+				sub {
+					font-size: smaller;
+					vertical-align: bottom;
 				}
 			}
 
