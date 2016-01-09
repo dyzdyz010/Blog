@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/dyzdyz010/Blog/models"
-	"github.com/qiniu/api/rs"
+	"github.com/qiniu/api.v6/rs"
 )
 
 type AdminController struct {
