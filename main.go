@@ -4,7 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/dyzdyz010/Blog/models"
 	_ "github.com/dyzdyz010/Blog/routers"
-	. "github.com/qiniu/api/conf"
+	. "github.com/qiniu/api.v6/conf"
 	"strings"
 )
 
